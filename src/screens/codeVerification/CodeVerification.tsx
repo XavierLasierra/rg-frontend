@@ -6,10 +6,11 @@ import { SkButton } from "../../components/skButton/SkButton";
 import { SkCodeInput } from "../../components/skCodeInput/SkCodeInput";
 import { useStores } from "../../hooks/useStores";
 import { Routes } from "../../navigation/routes";
+import { observer } from "mobx-react";
 
 const CODE_LENGTH = 6;
 
-const CodeVerification = () => {
+const CodeVerification = observer(() => {
   const { user } = useStores();
   const navigation = useNavigation();
 
@@ -33,6 +34,7 @@ const CodeVerification = () => {
   return (
     <SafeAreaView>
       <SkCodeInput
+        style={{ paddingVertical: 20 }}
         value={local.verificationCode}
         onChangeText={setVerificationCode}
         codeLength={CODE_LENGTH}
@@ -40,6 +42,6 @@ const CodeVerification = () => {
       <SkButton text="Submit" onPress={submitCodeVerification}></SkButton>
     </SafeAreaView>
   );
-};
+});
 
 export { CodeVerification };

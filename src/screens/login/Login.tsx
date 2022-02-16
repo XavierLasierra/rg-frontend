@@ -2,11 +2,12 @@ import { useNavigation } from "@react-navigation/native";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { Alert, SafeAreaView, Text, View } from "react-native";
 import { SkButton } from "../../components/skButton/SkButton";
 import { SkInput } from "../../components/skInput/SkInput";
 import { useStores } from "../../hooks/useStores";
 import { Routes } from "../../navigation/routes";
+import { SignInResponses } from "../../stores/user/UserStore";
 
 import styles from "./Login.styles";
 
@@ -25,6 +26,17 @@ const LogIn = observer(() => {
     const response = await user.signUp(local.email, local.password);
     if (response) {
       navigateCodeVerification();
+    }
+  };
+
+  const submitSignIn = async () => {
+    const response = await user.signIn(local.email, local.password);
+    if (response === SignInResponses.NotConfirmed) {
+      navigateCodeVerification();
+    } else if (response === SignInResponses.Ok) {
+      Alert.alert("OKKKKK");
+    } else {
+      Alert.alert("error");
     }
   };
 
