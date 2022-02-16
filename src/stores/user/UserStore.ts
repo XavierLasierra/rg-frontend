@@ -47,6 +47,8 @@ class UserStore implements IUserStore {
     } catch (e: any) {
       if (e.code === "UserNotConfirmedException") {
         await this.resendConfirmationCode(email);
+
+        this.setEmail(email);
         result = SignInResponses.NotConfirmed;
       }
     } finally {
@@ -75,6 +77,7 @@ class UserStore implements IUserStore {
   };
 
   confirmSignUp = async (code: string) => {
+    console.log(this.email);
     if (this.email === null) return false;
     this.setLoading(true);
     let result = false;
