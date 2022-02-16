@@ -2,11 +2,18 @@ import { observable, action, makeObservable } from "mobx";
 
 import { Auth } from "aws-amplify";
 
+export enum SignInResponses {
+  Error = "error",
+  Ok = "ok",
+  NotConfirmed = "NotConfirmed",
+}
+
 export interface IUserStore {
   loading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  signIn: (email: string, password: string) => Promise<SignInResponses>;
   signUp: (email: string, password: string) => Promise<boolean>;
   confirmSignUp: (password: string) => Promise<boolean>;
+  resendConfirmationCode: (email?: string) => Promise<boolean>;
 }
 
 class UserStore implements IUserStore {
@@ -30,14 +37,18 @@ class UserStore implements IUserStore {
     this.email = email;
   };
 
-  login = async (email: string, password: string) => {
-    let result = false;
+  signIn = async (email: string, password: string) => {
+    let result: SignInResponses = SignInResponses.Error;
     this.setLoading(true);
     try {
       await Auth.signIn(email, password);
-      result = true;
-    } catch (e) {
-      //
+
+      result = SignInResponses.Ok;
+    } catch (e: any) {
+      if (e.code === "UserNotConfirmedException") {
+        await this.resendConfirmationCode(email);
+        result = SignInResponses.NotConfirmed;
+      }
     } finally {
       this.setLoading(false);
     }
@@ -45,7 +56,6 @@ class UserStore implements IUserStore {
   };
 
   signUp = async (email: string, password: string) => {
-    this.setEmail(null);
     this.setLoading(true);
     let result = false;
     try {
@@ -74,6 +84,23 @@ class UserStore implements IUserStore {
       });
 
       this.setEmail(null);
+      result = true;
+    } catch (e) {
+      //
+    } finally {
+      this.setLoading(false);
+    }
+    return result;
+  };
+
+  resendConfirmationCode = async (email = this.email) => {
+    if (email === null) return false;
+    this.setLoading(true);
+    let result = false;
+
+    try {
+      await Auth.resendSignUp(email);
+
       result = true;
     } catch (e) {
       //
