@@ -1,10 +1,13 @@
 import React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { Button, SafeAreaView, Text } from "react-native";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
     <SafeAreaView>
       <Text>Home works</Text>
+      <Button
+        title="Login"
+        onPress={() => navigation.navigate("LogIn")}></Button>
     </SafeAreaView>
   );
 };
