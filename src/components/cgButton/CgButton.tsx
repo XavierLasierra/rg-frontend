@@ -1,11 +1,19 @@
 import React from "react";
 import {
+  LayoutChangeEvent,
   Text,
   TextStyle,
   TouchableOpacity,
   TouchableOpacityProps,
   ViewStyle,
 } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { Metrics } from "../../theme";
+import { CgSpinner } from "../cgSpinner/CgSpinner";
 
 import styles from "./CgButton.style";
 
@@ -27,6 +35,7 @@ const CgButton = ({
   size,
   textStyle,
   disabled,
+  loading,
   ...rest
 }: SkButtonProps) => {
   const getTextStyle = () => {
@@ -86,17 +95,32 @@ const CgButton = ({
     return [...buttonStyle, style, disabled && styles.disabled];
   };
 
+  const width = useSharedValue(0);
+
+  const onLayout = (event: LayoutChangeEvent) => {
+    width.value = event.nativeEvent.layout.width;
+  };
+
   const renderContent = () => {
     return children ? children : <Text style={getTextStyle()}>{text}</Text>;
   };
 
+  const animatedContainerStyle = useAnimatedStyle(() => ({
+    width: withTiming(loading ? Metrics.buttonSize : width.value, {
+      duration: 200,
+    }),
+  }));
+
   return (
     <TouchableOpacity
+      onLayout={onLayout}
       accessibilityRole="button"
-      style={getButtonStyle()}
       disabled={disabled}
+      style={styles.container}
       {...rest}>
-      {renderContent()}
+      <Animated.View style={[getButtonStyle(), animatedContainerStyle]}>
+        {loading ? <CgSpinner style={styles.spinner} /> : renderContent()}
+      </Animated.View>
     </TouchableOpacity>
   );
 };

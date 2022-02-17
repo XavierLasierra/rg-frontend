@@ -27,7 +27,7 @@ const Colors = {
 
   cancel: "#E0758C",
 
-  secondary: "#08A2B0",
+  secondary: "#00A1FE",
   secondary50: "#08A2B080",
   secondary0: "#08A2B000",
 

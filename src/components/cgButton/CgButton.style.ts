@@ -10,6 +10,10 @@ export default StyleSheet.create({
   cancelText: {
     color: Colors.cancel,
   },
+  container: {
+    alignItems: "center",
+    alignSelf: "stretch",
+  },
   default: {
     alignItems: "center",
     backgroundColor: Colors.secondary,
@@ -48,6 +52,9 @@ export default StyleSheet.create({
   },
   smallText: {
     fontSize: Fonts.size.small,
+  },
+  spinner: {
+    margin: Metrics.smallSpace,
   },
   transparent: {
     backgroundColor: Colors.transparent,
