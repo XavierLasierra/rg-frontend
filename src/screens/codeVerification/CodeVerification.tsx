@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { action, observable } from "mobx";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native";
-import { SkButton } from "../../components/skButton/SkButton";
+import { CgButton } from "../../components/cgButton/CgButton";
 import { SkCodeInput } from "../../components/skCodeInput/SkCodeInput";
 import { useStores } from "../../hooks/useStores";
 import { Routes } from "../../navigation/routes";
@@ -39,7 +39,7 @@ const CodeVerification = observer(() => {
         onChangeText={setVerificationCode}
         codeLength={CODE_LENGTH}
       />
-      <SkButton text="Submit" onPress={submitCodeVerification}></SkButton>
+      <CgButton text="Submit" onPress={submitCodeVerification}></CgButton>
     </SafeAreaView>
   );
 });

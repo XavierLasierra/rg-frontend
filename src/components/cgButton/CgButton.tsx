@@ -7,14 +7,9 @@ import {
   ViewStyle,
 } from "react-native";
 
-import styles from "./SkButton.style";
+import styles from "./CgButton.style";
 
-export type SkButtonTypes =
-  | "primary"
-  | "transparent"
-  | "secondary"
-  | "cancel"
-  | "secure";
+export type SkButtonTypes = "primary" | "transparent" | "secondary" | "cancel";
 
 export interface SkButtonProps extends TouchableOpacityProps {
   size?: "small" | "medium" | "large";
@@ -24,7 +19,7 @@ export interface SkButtonProps extends TouchableOpacityProps {
   loading?: boolean;
 }
 
-const SkButton = ({
+const CgButton = ({
   type,
   text,
   style,
@@ -46,9 +41,6 @@ const SkButton = ({
         break;
       case "transparent":
         textButtonStyle = [...textButtonStyle, styles.transparentText];
-        break;
-      case "secure":
-        textButtonStyle = [...textButtonStyle, styles.secureText];
         break;
       default:
     }
@@ -77,9 +69,6 @@ const SkButton = ({
         break;
       case "transparent":
         buttonStyle = [...buttonStyle, styles.transparent];
-        break;
-      case "secure":
-        buttonStyle = [...buttonStyle, styles.secure];
         break;
       default:
     }
@@ -112,4 +101,4 @@ const SkButton = ({
   );
 };
 
-export { SkButton };
+export { CgButton };

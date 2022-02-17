@@ -3,7 +3,7 @@ import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { Alert, SafeAreaView, Text, View } from "react-native";
-import { SkButton } from "../../components/skButton/SkButton";
+import { CgButton } from "../../components/cgButton/CgButton";
 import { SkInput } from "../../components/skInput/SkInput";
 import { useStores } from "../../hooks/useStores";
 import { Routes } from "../../navigation/routes";
@@ -60,7 +60,7 @@ const LogIn = observer(() => {
           onChangeText={action((text: string) => (local.password = text))}
           value={local.password}></SkInput>
       </View>
-      <SkButton text="Submit" onPress={submitSignIn}></SkButton>
+      <CgButton text="Submit" onPress={submitSignIn}></CgButton>
       <Text style={styles.title}>Sign Up</Text>
       <View>
         <Text>Email</Text>
@@ -76,7 +76,7 @@ const LogIn = observer(() => {
           onChangeText={action((text: string) => (local.password = text))}
           value={local.password}></SkInput>
       </View>
-      <SkButton text="Sign Up" onPress={submitSignUp}></SkButton>
+      <CgButton text="Sign Up" onPress={submitSignUp}></CgButton>
     </SafeAreaView>
   );
 });

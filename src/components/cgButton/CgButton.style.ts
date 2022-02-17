@@ -43,10 +43,6 @@ export default StyleSheet.create({
   secondaryText: {
     color: Colors.secondary,
   },
-  secure: {
-    backgroundColor: Colors.premium,
-  },
-  secureText: {},
   smallButton: {
     height: Metrics.buttonSmallSize,
   },

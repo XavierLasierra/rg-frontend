@@ -1,4 +1,5 @@
 import React from "react";
+import StorybookUIRoot from "./.storybook/Storybook";
 
 import Amplify from "aws-amplify";
 import { awsconfig } from "./src/config/aws-exports";
@@ -19,4 +20,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default process.env.STORYBOOK_ACTIVE === "true" ? StorybookUIRoot : App;
