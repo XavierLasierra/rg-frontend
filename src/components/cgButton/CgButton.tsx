@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  ColorValue,
+  LayoutChangeEvent,
   Text,
   TextStyle,
   TouchableOpacity,
   TouchableOpacityProps,
   ViewStyle,
 } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { Colors, Metrics } from "../../theme";
+import { CgSpinner } from "../cgSpinner/CgSpinner";
 
-import styles from "./SkButton.style";
+import styles from "./CgButton.style";
 
-export type SkButtonTypes =
-  | "primary"
-  | "transparent"
-  | "secondary"
-  | "cancel"
-  | "secure";
+export type SkButtonTypes = "primary" | "transparent" | "secondary" | "cancel";
 
 export interface SkButtonProps extends TouchableOpacityProps {
   size?: "small" | "medium" | "large";
@@ -24,16 +28,44 @@ export interface SkButtonProps extends TouchableOpacityProps {
   loading?: boolean;
 }
 
-const SkButton = ({
+const buttonSizes = {
+  small: Metrics.buttonSmallSize,
+  medium: Metrics.buttonMediumSize,
+  large: Metrics.buttonSize,
+};
+
+const CgButton = ({
   type,
   text,
   style,
   children,
-  size,
+  size = "large",
   textStyle,
   disabled,
+  loading,
   ...rest
 }: SkButtonProps) => {
+  const [width, setWidth] = useState<number>();
+
+  const onLayout = ({
+    nativeEvent: {
+      layout: { width },
+    },
+  }: LayoutChangeEvent) => {
+    setWidth(width);
+  };
+
+  const animatedContainerStyle = useAnimatedStyle(() =>
+    width !== undefined
+      ? {
+          width: withTiming(loading ? buttonSizes[size] : width, {
+            duration: 200,
+            easing: Easing.circle,
+          }),
+        }
+      : {},
+  );
+
   const getTextStyle = () => {
     let textButtonStyle: TextStyle[] = [styles.defaultText];
 
@@ -46,9 +78,6 @@ const SkButton = ({
         break;
       case "transparent":
         textButtonStyle = [...textButtonStyle, styles.transparentText];
-        break;
-      case "secure":
-        textButtonStyle = [...textButtonStyle, styles.secureText];
         break;
       default:
     }
@@ -78,9 +107,6 @@ const SkButton = ({
       case "transparent":
         buttonStyle = [...buttonStyle, styles.transparent];
         break;
-      case "secure":
-        buttonStyle = [...buttonStyle, styles.secure];
-        break;
       default:
     }
 
@@ -97,19 +123,44 @@ const SkButton = ({
     return [...buttonStyle, style, disabled && styles.disabled];
   };
 
+  const getBallColor = () => {
+    let ballColor: ColorValue;
+    switch (type) {
+      case "secondary":
+        ballColor = Colors.secondary;
+        break;
+      case "cancel":
+        ballColor = Colors.error;
+        break;
+      case "transparent":
+        ballColor = Colors.secondary;
+        break;
+      default:
+        ballColor = Colors.white;
+    }
+    return ballColor;
+  };
+
   const renderContent = () => {
     return children ? children : <Text style={getTextStyle()}>{text}</Text>;
   };
 
   return (
     <TouchableOpacity
+      onLayout={onLayout}
       accessibilityRole="button"
-      style={getButtonStyle()}
       disabled={disabled}
+      style={styles.container}
       {...rest}>
-      {renderContent()}
+      <Animated.View style={[getButtonStyle(), animatedContainerStyle]}>
+        {loading ? (
+          <CgSpinner ballSize={size} ballColor={getBallColor()} />
+        ) : (
+          renderContent()
+        )}
+      </Animated.View>
     </TouchableOpacity>
   );
 };
 
-export { SkButton };
+export { CgButton };

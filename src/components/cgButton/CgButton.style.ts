@@ -10,6 +10,10 @@ export default StyleSheet.create({
   cancelText: {
     color: Colors.cancel,
   },
+  container: {
+    alignItems: "center",
+    alignSelf: "stretch",
+  },
   default: {
     alignItems: "center",
     backgroundColor: Colors.secondary,
@@ -17,6 +21,7 @@ export default StyleSheet.create({
     height: Metrics.buttonSize,
     justifyContent: "center",
     paddingHorizontal: Metrics.baseSpace,
+    width: "100%",
   },
   defaultText: {
     color: Colors.white,
@@ -43,10 +48,6 @@ export default StyleSheet.create({
   secondaryText: {
     color: Colors.secondary,
   },
-  secure: {
-    backgroundColor: Colors.premium,
-  },
-  secureText: {},
   smallButton: {
     height: Metrics.buttonSmallSize,
   },

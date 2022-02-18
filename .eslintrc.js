@@ -22,7 +22,7 @@ module.exports = {
     ],
     "no-use-before-define": ["off"],
 
-    "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-console": ["error", { allow: ["warn", "error"]}],
     "@typescript-eslint/no-use-before-define": ["off"],
     "@typescript-eslint/no-var-requires": ["warn"],
     "@typescript-eslint/no-empty-function": ["warn"],
