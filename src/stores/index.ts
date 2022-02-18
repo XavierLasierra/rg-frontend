@@ -1,7 +1,11 @@
 import { createContext } from "react";
-import { userStore } from "./user/UserStore";
+import { IUserStore, userStore } from "./user/UserStore";
 
-export const stores = {
+export interface Stores {
+  user: IUserStore;
+}
+
+export const stores: Stores = {
   user: userStore,
 };
 

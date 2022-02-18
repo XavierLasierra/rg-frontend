@@ -1,6 +1,6 @@
-import { observable, action, makeObservable } from "mobx";
-
+import { observable, action, makeObservable, computed } from "mobx";
 import { Auth } from "aws-amplify";
+import { CognitoUser } from "amazon-cognito-identity-js";
 
 export enum SignInResponses {
   Error = "error",
@@ -19,18 +19,34 @@ export interface IUserStore {
 class UserStore implements IUserStore {
   loading = false;
   email: string | null = null;
+  cognitoUser: CognitoUser | null = null;
 
   constructor() {
     makeObservable(this, {
       loading: observable,
       email: observable,
+      cognitoUser: observable,
       setLoading: action,
       setEmail: action,
+      setCognitoUser: action,
+      jwtToken: computed,
     });
+  }
+
+  get jwtToken(): string {
+    if (!this.cognitoUser) {
+      return "";
+    }
+    const session = this.cognitoUser.getSignInUserSession();
+    return session?.getAccessToken().getJwtToken() || "";
   }
 
   setLoading = (loading: boolean) => {
     this.loading = loading;
+  };
+
+  setCognitoUser = (cognitoUser: CognitoUser | null) => {
+    this.cognitoUser = cognitoUser;
   };
 
   setEmail = (email: string | null) => {
@@ -41,7 +57,8 @@ class UserStore implements IUserStore {
     let result: SignInResponses = SignInResponses.Error;
     this.setLoading(true);
     try {
-      await Auth.signIn(email, password);
+      const cognitoUser = await Auth.signIn(email, password);
+      this.setCognitoUser(cognitoUser);
 
       result = SignInResponses.Ok;
     } catch (e: any) {
@@ -77,7 +94,6 @@ class UserStore implements IUserStore {
   };
 
   confirmSignUp = async (code: string) => {
-    console.log(this.email);
     if (this.email === null) return false;
     this.setLoading(true);
     let result = false;
