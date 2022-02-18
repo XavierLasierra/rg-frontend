@@ -30,19 +30,6 @@ const CgExpandableView = ({
   const height = useSharedValue(0);
   const width = useSharedValue(0);
 
-  useEffect(() => {
-    height.value = getActiveHeight();
-  }, [activeSize, autoSize.height]);
-
-  useEffect(() => {
-    width.value = getActiveWidth();
-  }, [activeSize, autoSize.width]);
-
-  const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-    const { height, width } = nativeEvent.layout;
-    setSize({ height, width });
-  };
-
   const getActiveHeight = (): number => {
     const height =
       sizePositions[activeSize]?.height && sizePositions[activeSize].height;
@@ -61,6 +48,19 @@ const CgExpandableView = ({
       return width;
     }
     return autoSize.width || 0;
+  };
+
+  useEffect(() => {
+    height.value = getActiveHeight();
+  }, [activeSize, autoSize.height]);
+
+  useEffect(() => {
+    width.value = getActiveWidth();
+  }, [activeSize, autoSize.width]);
+
+  const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+    const { height, width } = nativeEvent.layout;
+    setSize({ height, width });
   };
 
   const animatedContainer = useAnimatedStyle(() => {

@@ -103,7 +103,7 @@ const LogIn = observer(() => {
           <CgExpandableView
             activeSize={isActive ? 1 : 0}
             sizePositions={[{ height: "auto" }, { height: 0 }]}>
-            <CgFadeView enableOpacity={0} disableOpacity={1} isOpen={isActive}>
+            <CgFadeView isEnabled={!isActive}>
               <Text style={styles.text}>
                 Welcome to the world of Ranking Games! Start to register your
                 plays and see who is the best player!

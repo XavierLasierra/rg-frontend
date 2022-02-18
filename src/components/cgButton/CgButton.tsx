@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ColorValue,
   LayoutChangeEvent,
@@ -11,6 +11,7 @@ import {
 import Animated, {
   Easing,
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
@@ -37,7 +38,7 @@ const buttonSizes = {
 };
 
 const CgButton = ({
-  type,
+  type = "primary",
   text,
   style,
   children,
@@ -49,19 +50,21 @@ const CgButton = ({
   ...rest
 }: SkButtonProps) => {
   const [width, setWidth] = useState<number>();
+  const buttonWidth = useSharedValue(0);
 
-  const onLayout = ({
-    nativeEvent: {
-      layout: { width },
-    },
-  }: LayoutChangeEvent) => {
-    setWidth(width);
+  useEffect(() => {
+    if (!width) return;
+    buttonWidth.value = loading ? buttonSizes[size] : width;
+  }, [loading, width]);
+
+  const onLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+    setWidth(layout.width);
   };
 
   const animatedContainerStyle = useAnimatedStyle(() =>
     width !== undefined
       ? {
-          width: withTiming(loading ? buttonSizes[size] : width, {
+          width: withTiming(buttonWidth.value, {
             duration: animationDuration,
             easing: Easing.circle,
           }),
