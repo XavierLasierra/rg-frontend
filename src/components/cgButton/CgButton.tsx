@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  ColorValue,
   LayoutChangeEvent,
   Text,
   TextStyle,
@@ -8,11 +9,11 @@ import {
   ViewStyle,
 } from "react-native";
 import Animated, {
+  Easing,
   useAnimatedStyle,
-  useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Metrics } from "../../theme";
+import { Colors, Metrics } from "../../theme";
 import { CgSpinner } from "../cgSpinner/CgSpinner";
 
 import styles from "./CgButton.style";
@@ -27,17 +28,44 @@ export interface SkButtonProps extends TouchableOpacityProps {
   loading?: boolean;
 }
 
+const buttonSizes = {
+  small: Metrics.buttonSmallSize,
+  medium: Metrics.buttonMediumSize,
+  large: Metrics.buttonSize,
+};
+
 const CgButton = ({
   type,
   text,
   style,
   children,
-  size,
+  size = "large",
   textStyle,
   disabled,
   loading,
   ...rest
 }: SkButtonProps) => {
+  const [width, setWidth] = useState<number>();
+
+  const onLayout = ({
+    nativeEvent: {
+      layout: { width },
+    },
+  }: LayoutChangeEvent) => {
+    setWidth(width);
+  };
+
+  const animatedContainerStyle = useAnimatedStyle(() =>
+    width !== undefined
+      ? {
+          width: withTiming(loading ? buttonSizes[size] : width, {
+            duration: 200,
+            easing: Easing.circle,
+          }),
+        }
+      : {},
+  );
+
   const getTextStyle = () => {
     let textButtonStyle: TextStyle[] = [styles.defaultText];
 
@@ -95,21 +123,27 @@ const CgButton = ({
     return [...buttonStyle, style, disabled && styles.disabled];
   };
 
-  const width = useSharedValue(0);
-
-  const onLayout = (event: LayoutChangeEvent) => {
-    width.value = event.nativeEvent.layout.width;
+  const getBallColor = () => {
+    let ballColor: ColorValue;
+    switch (type) {
+      case "secondary":
+        ballColor = Colors.secondary;
+        break;
+      case "cancel":
+        ballColor = Colors.error;
+        break;
+      case "transparent":
+        ballColor = Colors.secondary;
+        break;
+      default:
+        ballColor = Colors.white;
+    }
+    return ballColor;
   };
 
   const renderContent = () => {
     return children ? children : <Text style={getTextStyle()}>{text}</Text>;
   };
-
-  const animatedContainerStyle = useAnimatedStyle(() => ({
-    width: withTiming(loading ? Metrics.buttonSize : width.value, {
-      duration: 200,
-    }),
-  }));
 
   return (
     <TouchableOpacity
@@ -119,7 +153,11 @@ const CgButton = ({
       style={styles.container}
       {...rest}>
       <Animated.View style={[getButtonStyle(), animatedContainerStyle]}>
-        {loading ? <CgSpinner style={styles.spinner} /> : renderContent()}
+        {loading ? (
+          <CgSpinner ballSize={size} ballColor={getBallColor()} />
+        ) : (
+          renderContent()
+        )}
       </Animated.View>
     </TouchableOpacity>
   );

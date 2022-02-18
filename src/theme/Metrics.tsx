@@ -50,6 +50,11 @@ const Metrics = {
     large: 128,
   },
   circleLabel: 60,
+  loadingBall: {
+    small: 10,
+    medium: 13,
+    large: 20,
+  },
 };
 
 export { Metrics };

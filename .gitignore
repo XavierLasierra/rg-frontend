@@ -64,6 +64,3 @@ Podfile.lock
 .env
 .env.development
 .env.production
-
-# Storybook
-.storybook/storyLoader.js

@@ -21,6 +21,7 @@ export default StyleSheet.create({
     height: Metrics.buttonSize,
     justifyContent: "center",
     paddingHorizontal: Metrics.baseSpace,
+    width: "100%",
   },
   defaultText: {
     color: Colors.white,
@@ -52,9 +53,6 @@ export default StyleSheet.create({
   },
   smallText: {
     fontSize: Fonts.size.small,
-  },
-  spinner: {
-    margin: Metrics.smallSpace,
   },
   transparent: {
     backgroundColor: Colors.transparent,
