@@ -19,6 +19,4 @@ const App = () => {
   );
 };
 
-console.log(process.env.STORYBOOK_ACTIVE);
-
 export default App;
