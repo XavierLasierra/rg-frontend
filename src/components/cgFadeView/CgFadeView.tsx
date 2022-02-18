@@ -1,16 +1,17 @@
-import React, { ReactChild } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import React from "react";
+import { ViewProps } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 
-interface CgFadeViewProps {
-  children: ReactChild;
+import { Animations } from "../../theme";
+
+interface CgFadeViewProps extends ViewProps {
   isOpen: boolean;
   enableOpacity: number;
   disableOpacity: number;
-  style?: StyleProp<ViewStyle>;
+  animationDuration?: number;
 }
 
 const CgFadeView = ({
@@ -18,11 +19,14 @@ const CgFadeView = ({
   isOpen,
   enableOpacity,
   disableOpacity,
+  animationDuration = Animations.duration.default,
   style,
 }: CgFadeViewProps) => {
   const opacity = useAnimatedStyle(() => {
     return {
-      opacity: withTiming(isOpen ? enableOpacity : disableOpacity),
+      opacity: withTiming(isOpen ? enableOpacity : disableOpacity, {
+        duration: animationDuration,
+      }),
     };
   });
 

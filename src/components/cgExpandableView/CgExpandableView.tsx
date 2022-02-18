@@ -1,35 +1,87 @@
-import React, { ReactChild } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import React, { useEffect, useState } from "react";
+import { LayoutChangeEvent, ViewProps } from "react-native";
 import Animated, {
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
-interface CgExpandableViewProps {
-  children?: ReactChild;
-  isOpen: boolean;
-  openHeight: number;
-  closedHeight: number;
-  style?: StyleProp<ViewStyle>;
+import { Animations } from "../../theme";
+
+export interface IExpandableSize {
+  height?: number | "auto";
+  width?: number | "auto";
+}
+interface CgExpandableViewProps extends ViewProps {
+  activeSize: number;
+  sizePositions: IExpandableSize[];
+  animationDuration?: number;
 }
 
 const CgExpandableView = ({
   children,
-  isOpen,
-  openHeight,
-  closedHeight,
+  activeSize,
+  sizePositions,
+  animationDuration = Animations.duration.default,
   style,
+  ...rest
 }: CgExpandableViewProps) => {
-  const animatedContainer = useAnimatedStyle(() => {
-    return {
-      height: withTiming(isOpen ? openHeight : closedHeight, {
-        duration: 500,
-      }),
-    };
-  });
+  const [autoSize, setSize] = useState<{ height?: number; width?: number }>({});
+  const height = useSharedValue(0);
+  const width = useSharedValue(0);
 
+  useEffect(() => {
+    height.value = getActiveHeight();
+  }, [activeSize, autoSize.height]);
+
+  useEffect(() => {
+    width.value = getActiveWidth();
+  }, [activeSize, autoSize.width]);
+
+  const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+    const { height, width } = nativeEvent.layout;
+    setSize({ height, width });
+  };
+
+  const getActiveHeight = (): number => {
+    const height =
+      sizePositions[activeSize]?.height && sizePositions[activeSize].height;
+
+    if (typeof height === "number") {
+      return height;
+    }
+    return autoSize.height || 0;
+  };
+
+  const getActiveWidth = (): number => {
+    const width =
+      sizePositions[activeSize]?.width && sizePositions[activeSize].width;
+
+    if (typeof width === "number") {
+      return width;
+    }
+    return autoSize.width || 0;
+  };
+
+  const animatedContainer = useAnimatedStyle(() => {
+    return autoSize.width && autoSize.height
+      ? {
+          height: withTiming(height.value, {
+            duration: animationDuration,
+          }),
+          width: withTiming(width.value, {
+            duration: animationDuration,
+          }),
+        }
+      : {};
+  });
   return (
-    <Animated.View style={[style, animatedContainer]}>{children}</Animated.View>
+    <Animated.View
+      onLayout={onLayout}
+      style={[style, animatedContainer]}
+      {...rest}>
+      {children}
+    </Animated.View>
   );
 };
 

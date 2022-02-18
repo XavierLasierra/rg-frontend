@@ -30,15 +30,10 @@ export default StyleSheet.create({
   image: {
     aspectRatio: 1.5,
   },
-  imageContainer: {
-    padding: Metrics.baseSpace,
-  },
   text: {
-    alignSelf: "center",
     color: Colors.gray,
     fontSize: Fonts.size.h2,
     fontWeight: "400",
-    paddingHorizontal: 30,
     textAlign: "center",
   },
   titleBottom: {
@@ -57,5 +52,6 @@ export default StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: "space-evenly",
+    paddingHorizontal: Metrics.baseSpace,
   },
 });

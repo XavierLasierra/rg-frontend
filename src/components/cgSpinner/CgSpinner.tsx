@@ -9,12 +9,11 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 
-import { Colors, Metrics } from "../../theme";
+import { Animations, Colors, Metrics } from "../../theme";
 import styles from "./CgSpinner.style";
 
 const CIRCLE_DEG = 360;
 const ANIMATION_REPETITIONS = 100;
-const ANIMATION_TIME = 750;
 
 export interface CgSpinnerProps {
   visible?: boolean;
@@ -28,7 +27,7 @@ const ballHeights = Metrics.loadingBall;
 
 const CgSpinner = ({
   visible = true,
-  animationDuration,
+  animationDuration = Animations.duration.long,
   containerStyle,
   ballColor = Colors.secondary,
   ballSize = "medium",
@@ -39,7 +38,7 @@ const CgSpinner = ({
   const startRotation = () => {
     rotation.value = withRepeat(
       withTiming(CIRCLE_DEG, {
-        duration: animationDuration || ANIMATION_TIME,
+        duration: animationDuration,
         easing: Easing.bezierFn(0.7, 0.6, 0.4, 0.7),
       }),
       ANIMATION_REPETITIONS,

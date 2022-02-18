@@ -97,12 +97,12 @@ const LogIn = observer(() => {
         <View style={styles.topContainer}>
           <View style={styles.blueFigure} />
           <Text style={styles.titleTop}>Hello!</Text>
-          <View style={styles.imageContainer}>
-            <FastImage
-              style={styles.image}
-              source={Images.boardGames}></FastImage>
-          </View>
-          <CgExpandableView isOpen={!isActive} closedHeight={0} openHeight={65}>
+          <FastImage
+            style={styles.image}
+            source={Images.boardGames}></FastImage>
+          <CgExpandableView
+            activeSize={isActive ? 1 : 0}
+            sizePositions={[{ height: "auto" }, { height: 0 }]}>
             <CgFadeView enableOpacity={0} disableOpacity={1} isOpen={isActive}>
               <Text style={styles.text}>
                 Welcome to the world of Ranking Games! Start to register your
@@ -113,9 +113,11 @@ const LogIn = observer(() => {
         </View>
         <CgExpandableView
           style={styles.expandableContainer}
-          isOpen={isActive}
-          openHeight={Metrics.screenHeight * 0.5}
-          closedHeight={Metrics.screenHeight * 0.2}>
+          activeSize={isActive ? 1 : 0}
+          sizePositions={[
+            { height: Metrics.screenHeight * 0.2 },
+            { height: Metrics.screenHeight * 0.5 },
+          ]}>
           {renderSignIn()}
         </CgExpandableView>
       </View>

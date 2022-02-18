@@ -13,9 +13,10 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { Colors, Metrics } from "../../theme";
+
 import { CgSpinner } from "../cgSpinner/CgSpinner";
 
+import { Animations, Colors, Metrics } from "../../theme";
 import styles from "./CgButton.style";
 
 export type SkButtonTypes = "primary" | "transparent" | "secondary" | "cancel";
@@ -26,6 +27,7 @@ export interface SkButtonProps extends TouchableOpacityProps {
   type?: SkButtonTypes;
   textStyle?: TextStyle;
   loading?: boolean;
+  animationDuration?: number;
 }
 
 const buttonSizes = {
@@ -43,6 +45,7 @@ const CgButton = ({
   textStyle,
   disabled,
   loading,
+  animationDuration = Animations.duration.short,
   ...rest
 }: SkButtonProps) => {
   const [width, setWidth] = useState<number>();
@@ -59,7 +62,7 @@ const CgButton = ({
     width !== undefined
       ? {
           width: withTiming(loading ? buttonSizes[size] : width, {
-            duration: 200,
+            duration: animationDuration,
             easing: Easing.circle,
           }),
         }
