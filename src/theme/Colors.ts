@@ -7,13 +7,8 @@ const Colors = {
 
   transparent: "rgba(0,0,0,0)",
 
+  gray: "#E5E5E5",
   darkGray: "#9598ab",
-  gray: "#bfbbbb",
-  gray80: "#bfbbbbCC",
-  gray50: "#bfbbbb80",
-  fontGray: "#7D7472",
-  lightGray: "#DEDEDE",
-  lightGray50: "#98959580",
 
   primary: "#000033",
   primary50: "#00003380",
@@ -28,7 +23,7 @@ const Colors = {
   cancel: "#E0758C",
 
   secondary: "#00A1FE",
-  secondary50: "#08A2B080",
+  secondaryDark: "#008FE1",
   secondary0: "#08A2B000",
 
   tiber: "#073A3F",

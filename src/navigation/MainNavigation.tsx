@@ -24,7 +24,11 @@ const MainNavigation = observer(() => {
     );
   };
 
-  return <Stack.Navigator>{main()}</Stack.Navigator>;
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {main()}
+    </Stack.Navigator>
+  );
 });
 
 export { MainNavigation };

@@ -1,8 +1,11 @@
 import { Dimensions } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const { width, height } = Dimensions.get("window");
+const statusBarHeight = getStatusBarHeight();
 
 const Metrics = {
+  statusBarHeight,
   navBarHeight: 50,
   tabBarHeight: 80,
   buttonSize: 65,
