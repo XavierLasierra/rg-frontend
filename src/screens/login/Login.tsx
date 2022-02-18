@@ -1,19 +1,29 @@
-import { useNavigation } from "@react-navigation/native";
-import { action, observable } from "mobx";
-import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { Alert, SafeAreaView, Text, View } from "react-native";
-import { CgButton } from "../../components/cgButton/CgButton";
-import { SkInput } from "../../components/skInput/SkInput";
-import { useStores } from "../../hooks/useStores";
+import FastImage from "react-native-fast-image";
+import { useNavigation } from "@react-navigation/native";
 import { Routes } from "../../navigation/routes";
+
+import { action, observable } from "mobx";
+import { observer } from "mobx-react";
+import { useStores } from "../../hooks/useStores";
+
 import { SignInResponses } from "../../stores/user/UserStore";
 
+import { CgButton } from "../../components/cgButton/CgButton";
+import { SkInput } from "../../components/skInput/SkInput";
+
+import { CgExpandableView } from "../../components/cgExpandableView/CgExpandableView";
+import { CgFadeView } from "../../components/cgFadeView/CgFadeView";
+
+import { Images, Metrics } from "../../theme";
 import styles from "./Login.styles";
 
 const LogIn = observer(() => {
   const navigation = useNavigation();
   const { user } = useStores();
+
+  const [isActive, setIsActive] = useState(false);
 
   const [local] = useState(() =>
     observable({
@@ -43,40 +53,91 @@ const LogIn = observer(() => {
   const navigateCodeVerification = () => {
     navigation.navigate(Routes.CodeVerification);
   };
+
+  const handleExpandable = () => {
+    setIsActive(true);
+  };
+
+  const renderSignIn = () => {
+    if (isActive) {
+      return (
+        <>
+          <View>
+            <SkInput
+              onChangeText={action((text: string) => (local.email = text))}
+              value={local.email}
+              placeholder={"Email address"}></SkInput>
+          </View>
+          <View>
+            <SkInput
+              onChangeText={action((text: string) => (local.password = text))}
+              value={local.password}
+              placeholder={"Password"}></SkInput>
+          </View>
+          <CgButton text="Submit" onPress={submitSignIn}></CgButton>
+          <Text>Forgot your password?</Text>
+          <Text>Don't have an account yet?</Text>
+          <CgButton type="transparent" text="Sign Up"></CgButton>
+        </>
+      );
+    } else if (!isActive) {
+      return (
+        <CgButton
+          text={"Login To Your Account"}
+          type="transparent"
+          onPress={handleExpandable}
+          textStyle={styles.titleBottom}></CgButton>
+      );
+    }
+  };
+
   return (
-    <SafeAreaView>
-      <Text style={styles.title}>Login</Text>
-      <View>
-        <Text>Email</Text>
-        <SkInput
-          required
-          onChangeText={action((text: string) => (local.email = text))}
-          value={local.email}></SkInput>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
+          <View style={styles.blueFigure} />
+          <Text style={styles.titleTop}>Hello!</Text>
+          <View style={styles.imageContainer}>
+            <FastImage
+              style={styles.image}
+              source={Images.boardGames}></FastImage>
+          </View>
+          <CgExpandableView isOpen={!isActive} closedHeight={0} openHeight={65}>
+            <CgFadeView enableOpacity={0} disableOpacity={1} isOpen={isActive}>
+              <Text style={styles.text}>
+                Welcome to the world of Ranking Games! Start to register your
+                plays and see who is the best player!
+              </Text>
+            </CgFadeView>
+          </CgExpandableView>
+        </View>
+        <CgExpandableView
+          style={styles.expandableContainer}
+          isOpen={isActive}
+          openHeight={Metrics.screenHeight * 0.5}
+          closedHeight={Metrics.screenHeight * 0.2}>
+          {renderSignIn()}
+        </CgExpandableView>
       </View>
-      <View>
-        <Text>Password</Text>
-        <SkInput
-          required
-          onChangeText={action((text: string) => (local.password = text))}
-          value={local.password}></SkInput>
-      </View>
-      <CgButton text="Submit" onPress={submitSignIn}></CgButton>
-      <Text style={styles.title}>Sign Up</Text>
-      <View>
-        <Text>Email</Text>
-        <SkInput
-          required
-          onChangeText={action((text: string) => (local.email = text))}
-          value={local.email}></SkInput>
-      </View>
-      <View>
-        <Text>Password</Text>
-        <SkInput
-          required
-          onChangeText={action((text: string) => (local.password = text))}
-          value={local.password}></SkInput>
-      </View>
-      <CgButton text="Sign Up" onPress={submitSignUp}></CgButton>
+      {/* <View>
+
+        <Text style={styles.title}>Sign Up</Text>
+        <View>
+          <Text>Email</Text>
+          <SkInput
+            required
+            onChangeText={action((text: string) => (local.email = text))}
+            value={local.email}></SkInput>
+        </View>
+        <View>
+          <Text>Password</Text>
+          <SkInput
+            required
+            onChangeText={action((text: string) => (local.password = text))}
+            value={local.password}></SkInput>
+        </View>
+        <SkButton text="Sign Up" onPress={submitSignUp}></SkButton>
+      </View> */}
     </SafeAreaView>
   );
 });
