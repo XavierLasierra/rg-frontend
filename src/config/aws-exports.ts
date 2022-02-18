@@ -1,8 +1,8 @@
 import {
-  AWS_COGNITO_REGION,
   AWS_REGION,
   AWS_USER_POOL_CLIENT_ID,
   AWS_USER_POOL_ID,
+  AWS_USER_S3_BUCKET,
 } from "@env";
 
 interface IAWSAmplifyFederatedConfiguration {
@@ -36,8 +36,10 @@ interface IAWSAmplifyConfiguration {
 }
 
 export const awsconfig: IAWSAmplifyConfiguration = {
-  aws_cognito_region: AWS_COGNITO_REGION,
+  aws_cognito_region: AWS_REGION,
   aws_project_region: AWS_REGION,
+  aws_user_files_s3_bucket: AWS_USER_S3_BUCKET,
+  aws_user_files_s3_bucket_region: AWS_REGION,
   aws_user_pools_id: AWS_USER_POOL_ID,
   aws_user_pools_web_client_id: AWS_USER_POOL_CLIENT_ID,
 };
