@@ -8,55 +8,41 @@ import Animated, {
 
 import { Animations } from "../../theme";
 
-export interface IExpandableSize {
-  height?: number | "auto";
-  width?: number | "auto";
-}
 interface CgExpandableViewProps extends ViewProps {
-  activeSize: number;
-  sizePositions: IExpandableSize[];
   animationDuration?: number;
+  width?: number | "auto";
+  height?: number | "auto";
 }
 
 const CgExpandableView = ({
   children,
-  activeSize,
-  sizePositions,
+  width = "auto",
+  height = "auto",
   animationDuration = Animations.duration.default,
   style,
   ...rest
 }: CgExpandableViewProps) => {
   const [autoSize, setSize] = useState<{ height?: number; width?: number }>({});
-  const height = useSharedValue<number | null>(null);
-  const width = useSharedValue<number | null>(null);
+  const activeHeight = useSharedValue<number | null>(null);
+  const activeWidth = useSharedValue<number | null>(null);
 
   const getActiveHeight = (): number => {
-    const height =
-      sizePositions[activeSize]?.height && sizePositions[activeSize].height;
-    if (typeof height === "number") {
-      return height;
-    }
-    return autoSize.height || 0;
+    return typeof height === "number" ? height : autoSize.height || 0;
   };
 
   const getActiveWidth = (): number => {
-    const width =
-      sizePositions[activeSize]?.width && sizePositions[activeSize].width;
-    if (typeof width === "number") {
-      return width;
-    }
-    return autoSize.width || 0;
+    return typeof width === "number" ? width : autoSize.width || 0;
   };
 
   useEffect(() => {
     if (autoSize.height === undefined) return;
-    height.value = getActiveHeight();
-  }, [activeSize, autoSize.height]);
+    activeHeight.value = getActiveHeight();
+  }, [autoSize.height, height]);
 
   useEffect(() => {
     if (autoSize.width === undefined) return;
-    width.value = getActiveWidth();
-  }, [activeSize, autoSize.width]);
+    activeWidth.value = getActiveWidth();
+  }, [autoSize.width, width]);
 
   const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
     if (autoSize?.height || autoSize?.width) return;
@@ -66,26 +52,26 @@ const CgExpandableView = ({
 
   const animatedHeight = useAnimatedStyle(
     () =>
-      height.value !== null
+      activeHeight.value !== null
         ? {
-            height: withTiming(height.value, {
+            height: withTiming(activeHeight.value, {
               duration: animationDuration,
             }),
           }
         : {},
-    [height.value],
+    [activeHeight.value],
   );
 
   const animatedWidth = useAnimatedStyle(
     () =>
-      width.value !== null
+      activeWidth.value !== null
         ? {
-            width: withTiming(width.value, {
+            width: withTiming(activeWidth.value, {
               duration: animationDuration,
             }),
           }
         : {},
-    [width.value],
+    [activeWidth.value],
   );
 
   return (

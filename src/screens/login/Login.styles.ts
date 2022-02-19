@@ -10,9 +10,7 @@ export default StyleSheet.create({
     borderBottomRightRadius: 200,
     borderTopLeftRadius: 100,
     borderTopRightRadius: 100,
-    height: Metrics.screenHeight * 0.25,
     position: "absolute",
-    width: Metrics.screenWidth * 0.75,
   },
   container: {
     backgroundColor: Colors.secondary,

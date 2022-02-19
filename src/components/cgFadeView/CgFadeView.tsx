@@ -9,34 +9,30 @@ import Animated, {
 import { Animations } from "../../theme";
 
 interface CgFadeViewProps extends ViewProps {
-  isEnabled: boolean;
-  enabledOpacity?: number;
-  disabledOpacity?: number;
+  opacity?: number;
   animationDuration?: number;
 }
 
 const CgFadeView = ({
   children,
-  isEnabled,
-  enabledOpacity = 1,
-  disabledOpacity = 0,
+  opacity = 1,
   animationDuration = Animations.duration.default,
   style,
   ...rest
 }: CgFadeViewProps) => {
-  const opacity = useSharedValue(isEnabled ? enabledOpacity : disabledOpacity);
+  const activeOpacity = useSharedValue(opacity);
 
   useEffect(() => {
-    opacity.value = isEnabled ? enabledOpacity : disabledOpacity;
-  }, [isEnabled]);
+    activeOpacity.value = opacity;
+  }, [opacity]);
 
   const animatedOpacity = useAnimatedStyle(
     () => ({
-      opacity: withTiming(opacity.value, {
+      opacity: withTiming(activeOpacity.value, {
         duration: animationDuration,
       }),
     }),
-    [opacity.value],
+    [activeOpacity.value],
   );
 
   return (

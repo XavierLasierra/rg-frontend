@@ -98,25 +98,16 @@ const LogIn = observer(() => {
           <Text style={styles.titleTop}>Hello!</Text>
           <View style={styles.imageContainer}>
             <CgExpandableView
-              activeSize={isActive ? 1 : 0}
-              sizePositions={[
-                {
-                  height: Metrics.screenHeight * 0.4,
-                  width: Metrics.screenWidth * 0.8,
-                },
-                {
-                  height: Metrics.screenHeight,
-                  width: Metrics.screenWidth,
-                },
-              ]}
+              width={isActive ? Metrics.screenWidth : Metrics.screenWidth * 0.8}
+              height={
+                isActive ? Metrics.screenHeight : Metrics.screenHeight * 0.4
+              }
               style={styles.blueFigure}
             />
             <FastImage style={styles.image} source={Images.boardGames} />
           </View>
-          <CgExpandableView
-            activeSize={isActive ? 1 : 0}
-            sizePositions={[{ height: "auto" }, { height: 0 }]}>
-            <CgFadeView isEnabled={!isActive}>
+          <CgExpandableView height={isActive ? 0 : "auto"}>
+            <CgFadeView opacity={isActive ? 0 : 1}>
               <Text style={styles.text}>
                 Welcome to the world of Ranking Games! Start to register your
                 plays and see who is the best player!
@@ -126,11 +117,9 @@ const LogIn = observer(() => {
         </View>
         <CgExpandableView
           style={styles.expandableContainer}
-          activeSize={isActive ? 1 : 0}
-          sizePositions={[
-            { height: Metrics.screenHeight * 0.2 },
-            { height: Metrics.screenHeight * 0.5 },
-          ]}>
+          height={
+            isActive ? Metrics.screenHeight * 0.5 : Metrics.screenHeight * 0.2
+          }>
           {renderSignIn()}
         </CgExpandableView>
       </View>
