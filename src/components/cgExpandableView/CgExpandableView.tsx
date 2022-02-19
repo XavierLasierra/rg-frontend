@@ -27,13 +27,12 @@ const CgExpandableView = ({
   ...rest
 }: CgExpandableViewProps) => {
   const [autoSize, setSize] = useState<{ height?: number; width?: number }>({});
-  const height = useSharedValue(0);
-  const width = useSharedValue(0);
+  const height = useSharedValue<number | null>(null);
+  const width = useSharedValue<number | null>(null);
 
   const getActiveHeight = (): number => {
     const height =
       sizePositions[activeSize]?.height && sizePositions[activeSize].height;
-
     if (typeof height === "number") {
       return height;
     }
@@ -43,7 +42,6 @@ const CgExpandableView = ({
   const getActiveWidth = (): number => {
     const width =
       sizePositions[activeSize]?.width && sizePositions[activeSize].width;
-
     if (typeof width === "number") {
       return width;
     }
@@ -51,34 +49,49 @@ const CgExpandableView = ({
   };
 
   useEffect(() => {
+    if (autoSize.height === undefined) return;
     height.value = getActiveHeight();
   }, [activeSize, autoSize.height]);
 
   useEffect(() => {
+    if (autoSize.width === undefined) return;
     width.value = getActiveWidth();
   }, [activeSize, autoSize.width]);
 
   const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+    if (autoSize?.height || autoSize?.width) return;
     const { height, width } = nativeEvent.layout;
     setSize({ height, width });
   };
 
-  const animatedContainer = useAnimatedStyle(() => {
-    return autoSize.width && autoSize.height
-      ? {
-          height: withTiming(height.value, {
-            duration: animationDuration,
-          }),
-          width: withTiming(width.value, {
-            duration: animationDuration,
-          }),
-        }
-      : {};
-  });
+  const animatedHeight = useAnimatedStyle(
+    () =>
+      height.value !== null
+        ? {
+            height: withTiming(height.value, {
+              duration: animationDuration,
+            }),
+          }
+        : {},
+    [height.value],
+  );
+
+  const animatedWidth = useAnimatedStyle(
+    () =>
+      width.value !== null
+        ? {
+            width: withTiming(width.value, {
+              duration: animationDuration,
+            }),
+          }
+        : {},
+    [width.value],
+  );
+
   return (
     <Animated.View
       onLayout={onLayout}
-      style={[style, animatedContainer]}
+      style={[style, animatedHeight, animatedWidth]}
       {...rest}>
       {children}
     </Animated.View>

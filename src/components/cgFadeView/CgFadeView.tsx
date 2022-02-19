@@ -24,24 +24,23 @@ const CgFadeView = ({
   style,
   ...rest
 }: CgFadeViewProps) => {
-  const opacityValue = useSharedValue(
-    isEnabled ? enabledOpacity : disabledOpacity,
-  );
+  const opacity = useSharedValue(isEnabled ? enabledOpacity : disabledOpacity);
 
   useEffect(() => {
-    opacityValue.value = isEnabled ? enabledOpacity : disabledOpacity;
+    opacity.value = isEnabled ? enabledOpacity : disabledOpacity;
   }, [isEnabled]);
 
-  const opacity = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacityValue.value, {
+  const animatedOpacity = useAnimatedStyle(
+    () => ({
+      opacity: withTiming(opacity.value, {
         duration: animationDuration,
       }),
-    };
-  });
+    }),
+    [opacity.value],
+  );
 
   return (
-    <Animated.View style={[style, opacity]} {...rest}>
+    <Animated.View style={[style, animatedOpacity]} {...rest}>
       {children}
     </Animated.View>
   );

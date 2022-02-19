@@ -6,19 +6,19 @@ export default StyleSheet.create({
   blueFigure: {
     alignSelf: "center",
     backgroundColor: Colors.secondaryDark,
-    borderBottomLeftRadius: 120,
-    borderBottomRightRadius: 60,
-    borderTopLeftRadius: 70,
-    borderTopRightRadius: 120,
-    height: 297,
+    borderBottomLeftRadius: 75,
+    borderBottomRightRadius: 200,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+    height: Metrics.screenHeight * 0.25,
     position: "absolute",
-    top: 146,
-    width: 291,
+    width: Metrics.screenWidth * 0.75,
   },
   container: {
     backgroundColor: Colors.secondary,
     flex: 1,
     marginTop: -Metrics.statusBarHeight,
+    overflow: "hidden",
     paddingTop: Metrics.statusBarHeight,
   },
   expandableContainer: {
@@ -29,6 +29,9 @@ export default StyleSheet.create({
   },
   image: {
     aspectRatio: 1.5,
+  },
+  imageContainer: {
+    paddingVertical: Metrics.mediumSpace,
   },
   text: {
     color: Colors.gray,

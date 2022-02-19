@@ -95,11 +95,24 @@ const LogIn = observer(() => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <View style={styles.blueFigure} />
           <Text style={styles.titleTop}>Hello!</Text>
-          <FastImage
-            style={styles.image}
-            source={Images.boardGames}></FastImage>
+          <View style={styles.imageContainer}>
+            <CgExpandableView
+              activeSize={isActive ? 1 : 0}
+              sizePositions={[
+                {
+                  height: Metrics.screenHeight * 0.4,
+                  width: Metrics.screenWidth * 0.8,
+                },
+                {
+                  height: Metrics.screenHeight,
+                  width: Metrics.screenWidth,
+                },
+              ]}
+              style={styles.blueFigure}
+            />
+            <FastImage style={styles.image} source={Images.boardGames} />
+          </View>
           <CgExpandableView
             activeSize={isActive ? 1 : 0}
             sizePositions={[{ height: "auto" }, { height: 0 }]}>
@@ -122,7 +135,6 @@ const LogIn = observer(() => {
         </CgExpandableView>
       </View>
       {/* <View>
-
         <Text style={styles.title}>Sign Up</Text>
         <View>
           <Text>Email</Text>

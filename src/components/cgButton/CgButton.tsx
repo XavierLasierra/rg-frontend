@@ -50,7 +50,7 @@ const CgButton = ({
   ...rest
 }: SkButtonProps) => {
   const [width, setWidth] = useState<number>();
-  const buttonWidth = useSharedValue(0);
+  const buttonWidth = useSharedValue<number | null>(null);
 
   useEffect(() => {
     if (!width) return;
@@ -61,15 +61,17 @@ const CgButton = ({
     setWidth(layout.width);
   };
 
-  const animatedContainerStyle = useAnimatedStyle(() =>
-    width !== undefined
-      ? {
-          width: withTiming(buttonWidth.value, {
-            duration: animationDuration,
-            easing: Easing.circle,
-          }),
-        }
-      : {},
+  const animatedContainerStyle = useAnimatedStyle(
+    () =>
+      buttonWidth.value !== null
+        ? {
+            width: withTiming(buttonWidth.value, {
+              duration: animationDuration,
+              easing: Easing.circle,
+            }),
+          }
+        : {},
+    [buttonWidth.value],
   );
 
   const getTextStyle = () => {
