@@ -1,6 +1,7 @@
 import { observable, action, makeObservable, computed } from "mobx";
 import { Auth } from "aws-amplify";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { create } from "../../services/Api";
 
 export enum SignInResponses {
   Error = "error",
@@ -15,7 +16,10 @@ export interface IUserStore {
   signUp: (email: string, password: string) => Promise<boolean>;
   confirmSignUp: (password: string) => Promise<boolean>;
   resendConfirmationCode: (email?: string) => Promise<boolean>;
+  requestPasswordReset: (email: string) => Promise<boolean>;
 }
+
+const api = create();
 
 class UserStore implements IUserStore {
   loading = false;
@@ -54,6 +58,8 @@ class UserStore implements IUserStore {
     try {
       const cognitoUser = await Auth.signIn(email, password);
       this.setCognitoUser(cognitoUser);
+      api.setAuthToken(this.jwtToken);
+
       result = SignInResponses.Ok;
     } catch (e: any) {
       if (e.code === "UserNotConfirmedException") {
@@ -105,6 +111,23 @@ class UserStore implements IUserStore {
     let result = false;
     try {
       await Auth.resendSignUp(email);
+      result = true;
+    } catch (e) {
+      //
+    } finally {
+      this.setLoading(false);
+    }
+    return result;
+  };
+
+  requestPasswordReset = async (email = this.email) => {
+    if (email === null) return false;
+    this.setLoading(true);
+    let result = false;
+
+    try {
+      await Auth.forgotPassword(email);
+
       result = true;
     } catch (e) {
       //
