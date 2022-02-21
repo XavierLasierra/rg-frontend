@@ -10,8 +10,10 @@ export enum SignInResponses {
 }
 
 export interface IUserStore {
+  hydrated: boolean;
   loading: boolean;
   email: string | null;
+  isLoggedIn: boolean;
   signIn: (email: string, password: string) => Promise<SignInResponses>;
   signUp: (email: string, password: string) => Promise<boolean>;
   confirmSignUp: (password: string) => Promise<boolean>;
@@ -22,19 +24,24 @@ export interface IUserStore {
 const api = create();
 
 class UserStore implements IUserStore {
+  hydrated = false;
   loading = false;
   email: string | null = null;
   cognitoUser: CognitoUser | null = null;
   constructor() {
     makeObservable(this, {
+      hydrated: observable,
       loading: observable,
       email: observable,
       cognitoUser: observable,
+      jwtToken: computed,
+      isLoggedIn: computed,
       setLoading: action,
       setEmail: action,
       setCognitoUser: action,
-      jwtToken: computed,
     });
+
+    this.hydrateComplete();
   }
   get jwtToken(): string {
     if (!this.cognitoUser) {
@@ -43,6 +50,11 @@ class UserStore implements IUserStore {
     const session = this.cognitoUser.getSignInUserSession();
     return session?.getAccessToken().getJwtToken() || "";
   }
+
+  get isLoggedIn(): boolean {
+    return false;
+  }
+
   setLoading = (loading: boolean) => {
     this.loading = loading;
   };
@@ -136,6 +148,18 @@ class UserStore implements IUserStore {
     }
     return result;
   };
+
+  async hydrateComplete() {
+    try {
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+      this.setCognitoUser(cognitoUser);
+      api.setAuthToken(this.jwtToken);
+    } catch (e) {
+      //
+    } finally {
+      this.hydrated = true;
+    }
+  }
 }
 
 const userStore = new UserStore();
