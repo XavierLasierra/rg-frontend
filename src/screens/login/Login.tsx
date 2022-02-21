@@ -77,11 +77,13 @@ const LogIn = observer(() => {
     return (
       <>
         <SkInput
+          icon="mail"
           onChangeText={setEmail}
           value={local.email}
           placeholder={"Email address"}
         />
         <SkInput
+          icon="lock"
           onChangeText={setPassword}
           value={local.password}
           placeholder={"Password"}
