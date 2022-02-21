@@ -7,12 +7,13 @@ import { SkCodeInput } from "../../components/skCodeInput/SkCodeInput";
 import { useStores } from "../../hooks/useStores";
 import { Routes } from "../../navigation/routes";
 import { observer } from "mobx-react";
+import { CodeVerificationNavigationProp } from "../../models/navigation";
 
 const CODE_LENGTH = 6;
 
 const CodeVerification = observer(() => {
   const { user } = useStores();
-  const navigation = useNavigation();
+  const navigation = useNavigation<CodeVerificationNavigationProp>();
 
   const [local] = useState(() =>
     observable({
