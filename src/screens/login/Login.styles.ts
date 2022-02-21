@@ -6,19 +6,17 @@ export default StyleSheet.create({
   blueFigure: {
     alignSelf: "center",
     backgroundColor: Colors.secondaryDark,
-    borderBottomLeftRadius: 120,
-    borderBottomRightRadius: 60,
-    borderTopLeftRadius: 70,
-    borderTopRightRadius: 120,
-    height: 297,
+    borderBottomLeftRadius: 75,
+    borderBottomRightRadius: 200,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
     position: "absolute",
-    top: 146,
-    width: 291,
   },
   container: {
     backgroundColor: Colors.secondary,
     flex: 1,
     marginTop: -Metrics.statusBarHeight,
+    overflow: "hidden",
     paddingTop: Metrics.statusBarHeight,
   },
   expandableContainer: {
@@ -31,14 +29,12 @@ export default StyleSheet.create({
     aspectRatio: 1.5,
   },
   imageContainer: {
-    padding: Metrics.baseSpace,
+    paddingVertical: Metrics.mediumSpace,
   },
   text: {
-    alignSelf: "center",
     color: Colors.gray,
     fontSize: Fonts.size.h2,
     fontWeight: "400",
-    paddingHorizontal: 30,
     textAlign: "center",
   },
   titleBottom: {
@@ -57,5 +53,6 @@ export default StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: "space-evenly",
+    paddingHorizontal: Metrics.baseSpace,
   },
 });

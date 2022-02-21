@@ -1,32 +1,45 @@
-import React, { ReactChild } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import React, { useEffect } from "react";
+import { ViewProps } from "react-native";
 import Animated, {
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
-interface CgFadeViewProps {
-  children: ReactChild;
-  isOpen: boolean;
-  enableOpacity: number;
-  disableOpacity: number;
-  style?: StyleProp<ViewStyle>;
+import { Animations } from "../../theme";
+
+interface CgFadeViewProps extends ViewProps {
+  opacity?: number;
+  animationDuration?: number;
 }
 
 const CgFadeView = ({
   children,
-  isOpen,
-  enableOpacity,
-  disableOpacity,
+  opacity = 1,
+  animationDuration = Animations.duration.default,
   style,
+  ...rest
 }: CgFadeViewProps) => {
-  const opacity = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(isOpen ? enableOpacity : disableOpacity),
-    };
-  });
+  const activeOpacity = useSharedValue(opacity);
 
-  return <Animated.View style={[style, opacity]}>{children}</Animated.View>;
+  useEffect(() => {
+    activeOpacity.value = opacity;
+  }, [opacity]);
+
+  const animatedOpacity = useAnimatedStyle(
+    () => ({
+      opacity: withTiming(activeOpacity.value, {
+        duration: animationDuration,
+      }),
+    }),
+    [activeOpacity.value],
+  );
+
+  return (
+    <Animated.View style={[style, animatedOpacity]} {...rest}>
+      {children}
+    </Animated.View>
+  );
 };
 
 export { CgFadeView };

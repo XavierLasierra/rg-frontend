@@ -18,11 +18,11 @@ module.exports = {
     "object-curly-spacing": [
       "error",
       "always",
-      { arraysInObjects: false, objectsInObjects: false },
+      { arraysInObjects: true, objectsInObjects: true },
     ],
     "no-use-before-define": ["off"],
 
-    "no-console": ["error", { allow: ["warn", "error"]}],
+    "no-console": ["error", { allow: ["warn", "error"] }],
     "@typescript-eslint/no-use-before-define": ["off"],
     "@typescript-eslint/no-var-requires": ["warn"],
     "@typescript-eslint/no-empty-function": ["warn"],
