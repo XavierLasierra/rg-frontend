@@ -18,19 +18,43 @@ import { CgFadeView } from "../../components/cgFadeView/CgFadeView";
 
 import { Images, Metrics } from "../../theme";
 import styles from "./Login.styles";
+import { LogInNavigationProp } from "../../models/navigation";
+import { CgText } from "../../components/cgText/CgText";
 
 const LogIn = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<LogInNavigationProp>();
   const { user } = useStores();
-
-  const [isActive, setIsActive] = useState(false);
 
   const [local] = useState(() =>
     observable({
       email: "",
       password: "",
+      isOpen: false,
+      isSignIn: true,
     }),
   );
+
+  const setEmail = action((email: string) => {
+    local.email = email;
+  });
+
+  const setPassword = action((password: string) => {
+    local.password = password;
+  });
+
+  const setIsOpen = action((isOpen: boolean) => {
+    local.isOpen = isOpen;
+  });
+
+  const setIsSignIn = action((isSignIn: boolean) => {
+    local.isSignIn = isSignIn;
+    setEmail("");
+    setPassword("");
+  });
+
+  const navigateCodeVerification = () => {
+    navigation.navigate(Routes.CodeVerification);
+  };
 
   const submitSignUp = async () => {
     const response = await user.signUp(local.email, local.password);
@@ -50,45 +74,49 @@ const LogIn = observer(() => {
     }
   };
 
-  const navigateCodeVerification = () => {
-    navigation.navigate(Routes.CodeVerification);
+  const renderForm = () => {
+    return (
+      <>
+        <SkInput
+          onChangeText={setEmail}
+          value={local.email}
+          placeholder={"Email address"}
+        />
+        <SkInput
+          onChangeText={setPassword}
+          value={local.password}
+          placeholder={"Password"}
+        />
+        {local.isSignIn ? (
+          <CgButton text="Submit" onPress={submitSignIn} />
+        ) : (
+          <CgButton text="Submit" onPress={submitSignUp} />
+        )}
+      </>
+    );
   };
 
-  const handleExpandable = () => {
-    setIsActive(true);
-  };
-
-  const renderSignIn = () => {
-    if (isActive) {
-      return (
-        <>
-          <View>
-            <SkInput
-              onChangeText={action((text: string) => (local.email = text))}
-              value={local.email}
-              placeholder={"Email address"}></SkInput>
-          </View>
-          <View>
-            <SkInput
-              onChangeText={action((text: string) => (local.password = text))}
-              value={local.password}
-              placeholder={"Password"}></SkInput>
-          </View>
-          <CgButton text="Submit" onPress={submitSignIn}></CgButton>
-          <Text>Forgot your password?</Text>
-          <Text>Don't have an account yet?</Text>
-          <CgButton type="transparent" text="Sign Up"></CgButton>
-        </>
-      );
-    } else if (!isActive) {
-      return (
+  const renderFooter = () => {
+    return local.isSignIn ? (
+      <>
+        <CgButton type="transparent" text="Forgot your password?" />
+        <CgText>{`Don't have an account yet?`}</CgText>
         <CgButton
-          text={"Login To Your Account"}
           type="transparent"
-          onPress={handleExpandable}
-          textStyle={styles.titleBottom}></CgButton>
-      );
-    }
+          text="Sign Up"
+          onPress={() => setIsSignIn(false)}
+        />
+      </>
+    ) : (
+      <>
+        <CgText>{`By signing up you agree to our Terms and Conditions`}</CgText>
+        <CgButton
+          type="transparent"
+          text="Go back"
+          onPress={() => setIsSignIn(true)}
+        />
+      </>
+    );
   };
 
   return (
@@ -98,16 +126,18 @@ const LogIn = observer(() => {
           <Text style={styles.titleTop}>Hello!</Text>
           <View style={styles.imageContainer}>
             <CgExpandableView
-              width={isActive ? Metrics.screenWidth : Metrics.screenWidth * 0.8}
+              width={
+                local.isOpen ? Metrics.screenWidth : Metrics.screenWidth * 0.8
+              }
               height={
-                isActive ? Metrics.screenHeight : Metrics.screenHeight * 0.4
+                local.isOpen ? Metrics.screenHeight : Metrics.screenHeight * 0.4
               }
               style={styles.blueFigure}
             />
             <FastImage style={styles.image} source={Images.boardGames} />
           </View>
-          <CgExpandableView height={isActive ? 0 : "auto"}>
-            <CgFadeView opacity={isActive ? 0 : 1}>
+          <CgExpandableView height={local.isOpen ? 0 : "auto"}>
+            <CgFadeView opacity={local.isOpen ? 0 : 1}>
               <Text style={styles.text}>
                 Welcome to the world of Ranking Games! Start to register your
                 plays and see who is the best player!
@@ -118,29 +148,22 @@ const LogIn = observer(() => {
         <CgExpandableView
           style={styles.expandableContainer}
           height={
-            isActive ? Metrics.screenHeight * 0.5 : Metrics.screenHeight * 0.2
+            local.isOpen
+              ? Metrics.screenHeight * 0.5
+              : Metrics.screenHeight * 0.2
           }>
-          {renderSignIn()}
+          {local.isOpen ? (
+            [renderForm(), renderFooter()]
+          ) : (
+            <CgButton
+              text={"Login To Your Account"}
+              type="transparent"
+              onPress={() => setIsOpen(true)}
+              textStyle={styles.titleBottom}
+            />
+          )}
         </CgExpandableView>
       </View>
-      {/* <View>
-        <Text style={styles.title}>Sign Up</Text>
-        <View>
-          <Text>Email</Text>
-          <SkInput
-            required
-            onChangeText={action((text: string) => (local.email = text))}
-            value={local.email}></SkInput>
-        </View>
-        <View>
-          <Text>Password</Text>
-          <SkInput
-            required
-            onChangeText={action((text: string) => (local.password = text))}
-            value={local.password}></SkInput>
-        </View>
-        <SkButton text="Sign Up" onPress={submitSignUp}></SkButton>
-      </View> */}
     </SafeAreaView>
   );
 });

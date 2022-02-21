@@ -10,6 +10,7 @@ export enum SignInResponses {
 
 export interface IUserStore {
   loading: boolean;
+  email: string | null;
   signIn: (email: string, password: string) => Promise<SignInResponses>;
   signUp: (email: string, password: string) => Promise<boolean>;
   confirmSignUp: (password: string) => Promise<boolean>;
