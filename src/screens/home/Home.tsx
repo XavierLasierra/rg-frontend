@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, SafeAreaView, Text } from "react-native";
 import { CgButton } from "../../components/cgButton/CgButton";
+import { SkIcon } from "../../components/skIcon/SkIcon";
 
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
