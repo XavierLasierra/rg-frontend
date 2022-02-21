@@ -1,0 +1,15 @@
+{
+  "codeVerification": {
+    "title": "We sent you a verification code to {{email}}",
+    "invalidCode": "Please check if the code/email you entered is correct",
+    "validCode": "Confirmed",
+    "resendCode": {
+      "success": "Code resent",
+      "error": "Could not resend code"
+    },
+    "buttons": {
+      "continue": "Continue",
+      "requestCode": "Request another code"
+    }
+  }
+}

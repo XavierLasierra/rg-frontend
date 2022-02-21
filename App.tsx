@@ -20,4 +20,4 @@ const App = () => {
   );
 };
 
-export default process.env.STORYBOOK_ACTIVE === "f" ? StorybookUIRoot : App;
+export default process.env.STORYBOOK_ACTIVE === "true" ? StorybookUIRoot : App;

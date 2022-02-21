@@ -19,6 +19,7 @@ import styles from "./CodeVerification.style";
 import { CgText } from "../../components/cgText/CgText";
 import { CgSpinner } from "../../components/cgSpinner/CgSpinner";
 import { CgButton } from "../../components/cgButton/CgButton";
+import { i18n } from "../../i18n";
 
 const CODE_LENGTH = 6;
 
@@ -76,9 +77,9 @@ const CodeVerification = observer(() => {
   const resendVerificationCode = async () => {
     const response = await user.resendConfirmationCode();
     if (response) {
-      return Alert.alert("Code resent");
+      return Alert.alert(i18n.t("codeVerification.resendCode.succes"));
     }
-    return Alert.alert("Could not resend code");
+    return Alert.alert(i18n.t("codeVerification.resendCode.error"));
   };
 
   return (
@@ -91,7 +92,9 @@ const CodeVerification = observer(() => {
           <CgText
             style={styles.title}
             parse={[{ type: "email", style: styles.email }]}>
-            {`We sent you a verification code to ${user.email}`}
+            {i18n.t("codeVerification.title", {
+              email: user.email,
+            })}
           </CgText>
           <CgCodeInput
             style={styles.codeInput}
@@ -102,20 +105,21 @@ const CodeVerification = observer(() => {
             isInvalid={local.codeStatus === CodeStatus.Invalid}
           />
           {local.codeStatus === CodeStatus.Invalid && (
-            <CgText>
-              {"Please check if the code/email you entered is correct"}
-            </CgText>
+            <CgText>{i18n.t("codeVerification.invalidCode")}</CgText>
           )}
           {local.codeStatus === CodeStatus.Valid && (
-            <CgText>{"Confirmed"}</CgText>
+            <CgText>{i18n.t("codeVerification.validCode")}</CgText>
           )}
         </View>
         {local.codeStatus === CodeStatus.Valid ? (
-          <CgButton text="Continue" onPress={navigateLogin} />
+          <CgButton
+            text={i18n.t("codeVerification.buttons.continue")}
+            onPress={navigateLogin}
+          />
         ) : (
           <CgButton
             type="transparent"
-            text="Request another code"
+            text={i18n.t("codeVerification.buttons.requestCode")}
             onPress={resendVerificationCode}
           />
         )}
