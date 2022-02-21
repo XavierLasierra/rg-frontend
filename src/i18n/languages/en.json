@@ -11,5 +11,20 @@
       "continue": "Continue",
       "requestCode": "Request another code"
     }
+  },
+  "login": {
+    "hello": "Hello",
+    "loginButton": "Login To Your Account",
+    "welcomeText": "Welcome to the world of Ranking Games! Start to register your plays and see who is the best player!",
+    "termsAndConditions": "By signing up, you agree to our _#Terms and Conditions#_",
+    "form": {
+      "emailPlaceholder": "Email address",
+      "passwordPlaceholder": "Password"
+    },
+    "back": "Go Back",
+    "signUpText": "Don't have an account yet?",
+    "signUpButton": "Sign Up",
+    "forgotPassword": "Forgot your password?",
+    "submit": "Submit"
   }
 }

@@ -3,6 +3,9 @@ import { AppStyles, Colors, Fonts, Metrics } from "../../theme";
 
 export default StyleSheet.create({
   ...AppStyles.screen,
+  SignUpButton: {
+    top: Metrics.bigSpace,
+  },
   blueFigure: {
     alignSelf: "center",
     backgroundColor: Colors.secondaryDark,
@@ -11,6 +14,10 @@ export default StyleSheet.create({
     borderTopLeftRadius: 100,
     borderTopRightRadius: 100,
     position: "absolute",
+  },
+  bottomContainer: {
+    alignItems: "center",
+    top: Metrics.bigSpace,
   },
   container: {
     backgroundColor: Colors.secondary,
@@ -40,6 +47,9 @@ export default StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
+  submitButton: {
+    paddingTop: Metrics.bigSpace,
+  },
   text: {
     color: Colors.gray,
     fontSize: Fonts.size.h2,
@@ -63,5 +73,11 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: "space-evenly",
     paddingHorizontal: Metrics.baseSpace,
+  },
+  url: { color: Colors.secondary },
+  urlText: {
+    urlText: {
+      color: Colors.secondary,
+    },
   },
 });
