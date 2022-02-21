@@ -25,11 +25,20 @@ export default StyleSheet.create({
     borderTopRightRadius: 50,
     padding: Metrics.bigSpace,
   },
+  icon: {
+    color: Colors.secondary,
+    fontSize: Metrics.icons.medium,
+    marginRight: 10,
+  },
   image: {
     aspectRatio: 1.5,
   },
   imageContainer: {
     paddingVertical: Metrics.mediumSpace,
+  },
+  inputContainer: {
+    alignItems: "center",
+    flexDirection: "row",
   },
   text: {
     color: Colors.gray,
