@@ -8,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { SkIcon } from "../skIcon/SkIcon";
 
 import styles from "./SkInput.style";
 
@@ -18,6 +19,8 @@ export interface SkInputProps extends TextInputProps {
   required?: boolean;
   label?: string;
   labelStyle?: StyleProp<TextStyle>;
+  icon?: string;
+  iconStyle?: StyleProp<TextStyle>;
 }
 
 const SkInput = (props: SkInputProps) => {
@@ -27,9 +30,11 @@ const SkInput = (props: SkInputProps) => {
     hint,
     multiline,
     containerStyle,
+    iconStyle,
     required,
     label,
     labelStyle,
+    icon,
     ...rest
   } = props;
   const [isFocused, setIsFocused] = useState(false);
@@ -45,10 +50,10 @@ const SkInput = (props: SkInputProps) => {
   return (
     <>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-      <View style={containerStyle}>
+      <View style={[styles.input, containerStyle]}>
+        {icon && <SkIcon style={[styles.icon, iconStyle]} name={icon}></SkIcon>}
         <TextInput
           style={[
-            styles.input,
             multiline && styles.inputArea,
             isInvalid && styles.inputInvalid,
             isFocused && styles.inputFocus,
@@ -57,8 +62,7 @@ const SkInput = (props: SkInputProps) => {
           onBlur={onBlur}
           multiline={multiline}
           value={value}
-          {...rest}
-        />
+          {...rest}></TextInput>
         {required && value === "" && <Text style={styles.requiredText}>*</Text>}
         {hint && <Text style={styles.hint}>{hint}</Text>}
       </View>

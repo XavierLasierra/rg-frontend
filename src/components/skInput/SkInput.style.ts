@@ -3,14 +3,22 @@ import { Colors, Fonts, Metrics } from "../../theme";
 
 export default StyleSheet.create({
   hint: {
-    color: Colors.lightGray,
+    color: Colors.gray,
     fontSize: Fonts.size.small,
     marginTop: Metrics.smallSpace,
   },
+  icon: {
+    color: Colors.secondary,
+    fontSize: Metrics.icons.medium,
+    marginRight: Metrics.smallSpace,
+    width: Metrics.icons.large,
+  },
   input: {
+    alignItems: "center",
     borderBottomColor: Colors.gray,
     borderBottomWidth: Metrics.borderWidth,
     color: Colors.tiber,
+    flexDirection: "row",
     fontSize: Fonts.size.medium,
     fontWeight: "500",
     height: Metrics.inputSize,

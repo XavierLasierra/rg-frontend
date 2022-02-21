@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Alert, SafeAreaView, Text, View } from "react-native";
 import FastImage from "react-native-fast-image";
+
 import { useNavigation } from "@react-navigation/native";
 import { Routes } from "../../navigation/routes";
+import { LogInNavigationProp } from "../../models/navigation";
 
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
@@ -12,14 +14,13 @@ import { SignInResponses } from "../../stores/user/UserStore";
 
 import { CgButton } from "../../components/cgButton/CgButton";
 import { SkInput } from "../../components/skInput/SkInput";
-
 import { CgExpandableView } from "../../components/cgExpandableView/CgExpandableView";
 import { CgFadeView } from "../../components/cgFadeView/CgFadeView";
+import { CgText } from "../../components/cgText/CgText";
 
 import { Images, Metrics } from "../../theme";
+import { i18n } from "../../i18n";
 import styles from "./Login.styles";
-import { LogInNavigationProp } from "../../models/navigation";
-import { CgText } from "../../components/cgText/CgText";
 
 const LogIn = observer(() => {
   const navigation = useNavigation<LogInNavigationProp>();
@@ -78,43 +79,65 @@ const LogIn = observer(() => {
     return (
       <>
         <SkInput
+          icon="mail"
           onChangeText={setEmail}
           value={local.email}
-          placeholder={"Email address"}
+          placeholder={i18n.t("login.form.emailPlaceholder")}
         />
         <SkInput
+          icon="lock"
           onChangeText={setPassword}
           value={local.password}
-          placeholder={"Password"}
+          placeholder={i18n.t("login.form.passwordPlaceholder")}
         />
-        {local.isSignIn ? (
-          <CgButton text="Submit" onPress={submitSignIn} />
-        ) : (
-          <CgButton text="Submit" onPress={submitSignUp} />
-        )}
+        <View style={styles.submitButton}>
+          {local.isSignIn ? (
+            <CgButton text={i18n.t("login.submit")} onPress={submitSignIn} />
+          ) : (
+            <CgButton text={i18n.t("login.submit")} onPress={submitSignUp} />
+          )}
+        </View>
       </>
     );
   };
 
+  const renderUrl = (_: string, match: string[]) => {
+    return match[2];
+  };
+
   const renderFooter = () => {
     return local.isSignIn ? (
-      <>
-        <CgButton type="transparent" text="Forgot your password?" />
-        <CgText>{`Don't have an account yet?`}</CgText>
+      <View style={styles.bottomContainer}>
+        <CgButton type="transparent" text={i18n.t("login.forgotPassword")} />
+        <CgText>{i18n.t("login.signUpText")}</CgText>
         <CgButton
+          style={styles.SignUpButton}
           type="transparent"
-          text="Sign Up"
+          text={i18n.t("login.signUpButton")}
           onPress={() => setIsSignIn(false)}
         />
-      </>
+      </View>
     ) : (
       <>
-        <CgText>{`By signing up you agree to our Terms and Conditions`}</CgText>
-        <CgButton
-          type="transparent"
-          text="Go back"
-          onPress={() => setIsSignIn(true)}
-        />
+        <View style={styles.bottomContainer}>
+          <CgText
+            parse={[
+              {
+                pattern: /(_#)(.+)(#_)/g,
+                style: styles.url,
+                renderText: renderUrl,
+                //onPress: () => console.log("This are the terms and conditions"),
+              },
+            ]}>
+            {i18n.t("login.termsAndConditions")}
+          </CgText>
+          <CgButton
+            style={styles.SignUpButton}
+            type="transparent"
+            text={i18n.t("login.back")}
+            onPress={() => setIsSignIn(true)}
+          />
+        </View>
       </>
     );
   };
@@ -123,7 +146,7 @@ const LogIn = observer(() => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <Text style={styles.titleTop}>Hello!</Text>
+          <Text style={styles.titleTop}>{i18n.t("login.hello")}</Text>
           <View style={styles.imageContainer}>
             <CgExpandableView
               width={
@@ -138,10 +161,7 @@ const LogIn = observer(() => {
           </View>
           <CgExpandableView height={local.isOpen ? 0 : "auto"}>
             <CgFadeView opacity={local.isOpen ? 0 : 1}>
-              <Text style={styles.text}>
-                Welcome to the world of Ranking Games! Start to register your
-                plays and see who is the best player!
-              </Text>
+              <Text style={styles.text}>{i18n.t("login.welcomeText")}</Text>
             </CgFadeView>
           </CgExpandableView>
         </View>
@@ -156,7 +176,7 @@ const LogIn = observer(() => {
             [renderForm(), renderFooter()]
           ) : (
             <CgButton
-              text={"Login To Your Account"}
+              text={i18n.t("login.loginButton")}
               type="transparent"
               onPress={() => setIsOpen(true)}
               textStyle={styles.titleBottom}
