@@ -19,6 +19,7 @@ const MainNavigation = observer(() => {
         <Stack.Screen
           name={Routes.CodeVerification}
           component={CodeVerification}
+          options={{ presentation: "modal" }}
         />
       </>
     );

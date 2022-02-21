@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { action, observable } from "mobx";
+import { observer } from "mobx-react";
 import { useNavigation } from "@react-navigation/native";
 import {
   Alert,
@@ -10,16 +11,17 @@ import {
 } from "react-native";
 
 import { CgCodeInput } from "../../components/cgCodeInput/CgCodeInput";
-import { useStores } from "../../hooks/useStores";
-import { Routes } from "../../navigation/routes";
-import { observer } from "mobx-react";
-import { CodeVerificationNavigationProp } from "../../models/navigation";
-
-import styles from "./CodeVerification.style";
 import { CgText } from "../../components/cgText/CgText";
 import { CgSpinner } from "../../components/cgSpinner/CgSpinner";
 import { CgButton } from "../../components/cgButton/CgButton";
+import { CgNavBar } from "../../components/cgNavBar/CgNavBar";
+
+import { Routes } from "../../navigation/routes";
+import { CodeVerificationNavigationProp } from "../../models/navigation";
 import { i18n } from "../../i18n";
+import { useStores } from "../../hooks/useStores";
+
+import styles from "./CodeVerification.style";
 
 const CODE_LENGTH = 6;
 
@@ -85,6 +87,7 @@ const CodeVerification = observer(() => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <CgSpinner modal visible={user.loading} />
+      <CgNavBar modal />
       <KeyboardAvoidingView
         style={[styles.lightScreen, styles.container]}
         behavior={Platform.OS === "ios" ? "padding" : "height"}>
