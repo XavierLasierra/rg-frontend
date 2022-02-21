@@ -20,10 +20,10 @@ export default StyleSheet.create({
     paddingTop: Metrics.statusBarHeight,
   },
   expandableContainer: {
-    alignItems: "center",
     backgroundColor: Colors.white,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
+    padding: Metrics.bigSpace,
   },
   image: {
     aspectRatio: 1.5,

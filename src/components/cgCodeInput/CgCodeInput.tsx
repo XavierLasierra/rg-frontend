@@ -8,9 +8,9 @@ import {
   ViewStyle,
 } from "react-native";
 
-import styles from "./SkCodeInput.style";
+import styles from "./CgCodeInput.style";
 
-export interface SkCodeInputProps {
+export interface CgCodeInputProps {
   codeLength: number;
   value: string;
   onChangeText: (text: string) => void;
@@ -19,14 +19,14 @@ export interface SkCodeInputProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const SkCodeInput = ({
+const CgCodeInput = ({
   codeLength,
   value,
   onChangeText,
   isInvalid,
   disabled,
   style,
-}: SkCodeInputProps) => {
+}: CgCodeInputProps) => {
   const numberOfNumbers = new Array(codeLength).fill("");
   const input = useRef<TextInput | null>(null);
 
@@ -64,4 +64,4 @@ const SkCodeInput = ({
   );
 };
 
-export { SkCodeInput };
+export { CgCodeInput };

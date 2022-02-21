@@ -1,13 +1,13 @@
 import React from "react";
-import { SkCodeInput } from "./SkCodeInput";
+import { CgCodeInput } from "./CgCodeInput";
 import { render, fireEvent } from "react-native-testing-library";
 
-describe("SkCodeInput", () => {
+describe("CgCodeInput", () => {
   it("render as single-code-box as codeLength provided", () => {
     const codeLength = 6;
 
     const { getAllByTestId } = render(
-      <SkCodeInput
+      <CgCodeInput
         codeLength={codeLength}
         onChangeText={() => undefined}
         value=""
@@ -22,7 +22,7 @@ describe("SkCodeInput", () => {
     const codeLength = 6;
 
     const { getByTestId } = render(
-      <SkCodeInput
+      <CgCodeInput
         codeLength={codeLength}
         onChangeText={() => undefined}
         value=""
@@ -38,7 +38,7 @@ describe("SkCodeInput", () => {
     const value = "123";
 
     const { queryByText } = render(
-      <SkCodeInput
+      <CgCodeInput
         codeLength={codeLength}
         onChangeText={() => undefined}
         value={value}
@@ -56,7 +56,7 @@ describe("SkCodeInput", () => {
     const onChangeText = jest.fn();
 
     const { getByTestId } = render(
-      <SkCodeInput
+      <CgCodeInput
         codeLength={codeLength}
         onChangeText={onChangeText}
         value=""

@@ -21,6 +21,7 @@ export interface CgSpinnerProps {
   animationDuration?: number;
   ballColor?: ColorValue;
   ballSize?: "small" | "medium" | "large";
+  modal?: boolean;
 }
 
 const ballHeights = Metrics.loadingBall;
@@ -31,8 +32,10 @@ const CgSpinner = ({
   containerStyle,
   ballColor = Colors.secondary,
   ballSize = "medium",
+  modal = false,
 }: CgSpinnerProps) => {
   const rotation = useSharedValue(0);
+  const position = useSharedValue(-Metrics.navBarHeight * 2);
   const ballHeight = ballHeights[ballSize];
 
   const startRotation = () => {
@@ -45,9 +48,19 @@ const CgSpinner = ({
     );
   };
 
+  const startAppereance = () => {
+    position.value = withTiming(Metrics.navBarHeight, {
+      duration: Animations.duration.short,
+      easing: Easing.linear,
+    });
+  };
+
   useEffect(() => {
     if (visible) {
       startRotation();
+      if (modal) {
+        startAppereance();
+      }
     } else {
       cancelAnimation(rotation);
     }
@@ -73,6 +86,13 @@ const CgSpinner = ({
     [rotation.value],
   );
 
+  const animatedAppereance = useAnimatedStyle(
+    () => ({
+      top: position.value,
+    }),
+    [rotation.value],
+  );
+
   const ballStyle = {
     backgroundColor: ballColor,
     borderBottomRightRadius: ballHeight * 0.5,
@@ -85,8 +105,16 @@ const CgSpinner = ({
     <>
       {visible && (
         <Animated.View
-          style={[styles.spinner, containerStyle, animatedSpinnerStyle]}>
-          <Animated.View style={[styles.ball, ballStyle, animatedBallStyles]} />
+          style={[
+            modal && styles.modal,
+            modal && animatedAppereance,
+            containerStyle,
+          ]}>
+          <Animated.View style={[styles.spinner, animatedSpinnerStyle]}>
+            <Animated.View
+              style={[styles.ball, ballStyle, animatedBallStyles]}
+            />
+          </Animated.View>
         </Animated.View>
       )}
     </>
