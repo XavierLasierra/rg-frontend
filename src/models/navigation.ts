@@ -4,7 +4,7 @@ import { Routes } from "../navigation/routes";
 
 export type RootStackParamList = {
   [Routes.Home]: undefined;
-  [Routes.LogIn]: undefined;
+  [Routes.Auth]: undefined;
   [Routes.CodeVerification]: undefined;
 };
 
@@ -15,11 +15,11 @@ export type HomeNavigationProp = NativeStackNavigationProp<
   Routes.Home
 >;
 
-export type LogInRouteProp = RouteProp<RootStackParamList, Routes.LogIn>;
+export type AuthRouteProp = RouteProp<RootStackParamList, Routes.Auth>;
 
-export type LogInNavigationProp = NativeStackNavigationProp<
+export type AuthNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  Routes.LogIn
+  Routes.Auth
 >;
 
 export type CodeVerificationRouteProp = RouteProp<

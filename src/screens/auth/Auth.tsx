@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import { Alert, SafeAreaView, Text, View } from "react-native";
+import { action, observable } from "mobx";
 import FastImage from "react-native-fast-image";
 
 import { useNavigation } from "@react-navigation/native";
 import { Routes } from "../../navigation/routes";
-import { LogInNavigationProp } from "../../models/navigation";
-
-import { action, observable } from "mobx";
-import { observer } from "mobx-react";
-import { useStores } from "../../hooks/useStores";
-
-import { SignInResponses } from "../../stores/user/UserStore";
+import { AuthNavigationProp } from "../../models/navigation";
 
 import { CgButton } from "../../components/cgButton/CgButton";
 import { CgInput } from "../../components/cgInput/CgInput";
@@ -18,12 +13,16 @@ import { CgExpandableView } from "../../components/cgExpandableView/CgExpandable
 import { CgFadeView } from "../../components/cgFadeView/CgFadeView";
 import { CgText } from "../../components/cgText/CgText";
 
-import { Images, Metrics } from "../../theme";
+import { observer } from "mobx-react";
+import { useStores } from "../../hooks/useStores";
+import { SignInResponses } from "../../stores/user/UserStore";
 import { i18n } from "../../i18n";
-import styles from "./Login.styles";
 
-const LogIn = observer(() => {
-  const navigation = useNavigation<LogInNavigationProp>();
+import { Images, Metrics } from "../../theme";
+import styles from "./Auth.styles";
+
+const Auth = observer(() => {
+  const navigation = useNavigation<AuthNavigationProp>();
   const { user } = useStores();
 
   const [local] = useState(() =>
@@ -82,24 +81,24 @@ const LogIn = observer(() => {
           icon="mail"
           onChangeText={setEmail}
           value={local.email}
-          placeholder={i18n.t("login.email")}
+          placeholder={i18n.t("auth.email")}
         />
         <CgInput
           icon="lock"
           onChangeText={setPassword}
           value={local.password}
-          placeholder={i18n.t("login.password")}
+          placeholder={i18n.t("auth.password")}
         />
         {local.isSignIn ? (
           <CgButton
             containerStyle={styles.submitButton}
-            text={i18n.t("login.buttons.signIn")}
+            text={i18n.t("auth.buttons.signIn")}
             onPress={submitSignIn}
           />
         ) : (
           <CgButton
             containerStyle={styles.submitButton}
-            text={i18n.t("login.buttons.signUp")}
+            text={i18n.t("auth.buttons.signUp")}
             onPress={submitSignUp}
           />
         )}
@@ -120,15 +119,15 @@ const LogIn = observer(() => {
               textStyle={styles.forgotButtonText}
               style={styles.forgotButton}
               type="transparent"
-              text={i18n.t("login.buttons.forgotPassword")}
+              text={i18n.t("auth.buttons.forgotPassword")}
             />
             <View>
               <CgText style={styles.smallText}>
-                {i18n.t("login.signUpHint")}
+                {i18n.t("auth.signUpHint")}
               </CgText>
               <CgButton
                 type="transparent"
-                text={i18n.t("login.buttons.signUp")}
+                text={i18n.t("auth.buttons.signUp")}
                 onPress={() => setIsSignIn(false)}
               />
             </View>
@@ -144,11 +143,11 @@ const LogIn = observer(() => {
                   renderText: renderUrl,
                 },
               ]}>
-              {i18n.t("login.termsAndConditions")}
+              {i18n.t("auth.termsAndConditions")}
             </CgText>
             <CgButton
               type="transparent"
-              text={i18n.t("login.buttons.back")}
+              text={i18n.t("auth.buttons.back")}
               onPress={() => setIsSignIn(true)}
             />
           </>
@@ -161,7 +160,7 @@ const LogIn = observer(() => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <Text style={styles.titleTop}>{i18n.t("login.title")}</Text>
+          <Text style={styles.titleTop}>{i18n.t("auth.title")}</Text>
           <CgExpandableView
             width={
               local.isOpen ? Metrics.screenWidth : Metrics.screenWidth * 0.8
@@ -174,7 +173,7 @@ const LogIn = observer(() => {
           <FastImage style={styles.image} source={Images.boardGames} />
           <CgExpandableView height={local.isOpen ? 0 : 100}>
             <CgFadeView opacity={local.isOpen ? 0 : 1}>
-              <CgText style={styles.text}>{i18n.t("login.welcome")}</CgText>
+              <CgText style={styles.text}>{i18n.t("auth.welcome")}</CgText>
             </CgFadeView>
           </CgExpandableView>
         </View>
@@ -192,7 +191,7 @@ const LogIn = observer(() => {
             </>
           ) : (
             <CgButton
-              text={i18n.t("login.buttons.start")}
+              text={i18n.t("auth.buttons.start")}
               type="transparent"
               onPress={() => setIsOpen(true)}
               textStyle={styles.startButtonText}
@@ -205,4 +204,4 @@ const LogIn = observer(() => {
   );
 });
 
-export { LogIn };
+export { Auth };

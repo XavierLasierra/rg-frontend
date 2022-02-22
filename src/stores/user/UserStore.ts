@@ -14,8 +14,10 @@ export interface IUserStore {
   loading: boolean;
   email: string | null;
   isLoggedIn: boolean;
+  userDetails: any | null;
   signIn: (email: string, password: string) => Promise<SignInResponses>;
   signUp: (email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
   confirmSignUp: (password: string) => Promise<boolean>;
   resendConfirmationCode: (email?: string) => Promise<boolean>;
   requestPasswordReset: (email: string) => Promise<boolean>;
@@ -28,17 +30,21 @@ class UserStore implements IUserStore {
   loading = false;
   email: string | null = null;
   cognitoUser: CognitoUser | null = null;
+  userDetails: any | null = null;
+
   constructor() {
     makeObservable(this, {
       hydrated: observable,
       loading: observable,
       email: observable,
       cognitoUser: observable,
+      userDetails: observable,
       jwtToken: computed,
       isLoggedIn: computed,
       setLoading: action,
       setEmail: action,
       setCognitoUser: action,
+      setUserDetails: action,
     });
 
     this.hydrateComplete();
@@ -52,18 +58,25 @@ class UserStore implements IUserStore {
   }
 
   get isLoggedIn(): boolean {
-    return false;
+    return this.userDetails !== null;
   }
 
   setLoading = (loading: boolean) => {
     this.loading = loading;
   };
+
   setCognitoUser = (cognitoUser: CognitoUser | null) => {
     this.cognitoUser = cognitoUser;
   };
+
   setEmail = (email: string | null) => {
     this.email = email;
   };
+
+  setUserDetails = (userDetails: any | null) => {
+    this.userDetails = userDetails;
+  };
+
   signIn = async (email: string, password: string) => {
     let result: SignInResponses = SignInResponses.Error;
     this.setLoading(true);
@@ -71,6 +84,8 @@ class UserStore implements IUserStore {
       const cognitoUser = await Auth.signIn(email, password);
       this.setCognitoUser(cognitoUser);
       api.setAuthToken(this.jwtToken);
+
+      await this.getMe();
 
       result = SignInResponses.Ok;
     } catch (e: any) {
@@ -84,6 +99,7 @@ class UserStore implements IUserStore {
     }
     return result;
   };
+
   signUp = async (email: string, password: string) => {
     this.setLoading(true);
     let result = false;
@@ -101,6 +117,7 @@ class UserStore implements IUserStore {
     }
     return result;
   };
+
   confirmSignUp = async (code: string) => {
     if (this.email === null) return false;
     this.setLoading(true);
@@ -117,6 +134,7 @@ class UserStore implements IUserStore {
     }
     return result;
   };
+
   resendConfirmationCode = async (email = this.email) => {
     if (email === null) return false;
     this.setLoading(true);
@@ -149,17 +167,45 @@ class UserStore implements IUserStore {
     return result;
   };
 
-  async hydrateComplete() {
+  getMe = async () => {
+    try {
+      const userData = await api.getMe();
+
+      this.setUserDetails(userData.data || null);
+    } catch (e) {
+      //
+    }
+  };
+
+  logout = async () => {
+    this.setCognitoUser(null);
+    this.setUserDetails(null);
+    api.setAuthToken("");
+
+    try {
+      await Auth.signOut();
+    } catch (e) {
+      //
+    }
+  };
+
+  hydrateComplete = async () => {
     try {
       const cognitoUser = await Auth.currentAuthenticatedUser();
-      this.setCognitoUser(cognitoUser);
-      api.setAuthToken(this.jwtToken);
+
+      if (cognitoUser) {
+        this.setCognitoUser(cognitoUser);
+        api.setAuthToken(this.jwtToken);
+        await this.getMe();
+      } else {
+        await this.logout();
+      }
     } catch (e) {
       //
     } finally {
       this.hydrated = true;
     }
-  }
+  };
 }
 
 const userStore = new UserStore();

@@ -12,7 +12,7 @@
       "requestCode": "Request another code"
     }
   },
-  "login": {
+  "auth": {
     "title": "Hello",
     "buttons": {
       "signIn": "Sign in",
