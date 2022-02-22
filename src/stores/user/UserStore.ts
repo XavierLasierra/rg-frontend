@@ -21,7 +21,6 @@ class UserStore implements IUserStore {
   loading = false;
   email: string | null = null;
   cognitoUser: CognitoUser | null = null;
-
   constructor() {
     makeObservable(this, {
       loading: observable,
@@ -33,7 +32,6 @@ class UserStore implements IUserStore {
       jwtToken: computed,
     });
   }
-
   get jwtToken(): string {
     if (!this.cognitoUser) {
       return "";
@@ -41,31 +39,25 @@ class UserStore implements IUserStore {
     const session = this.cognitoUser.getSignInUserSession();
     return session?.getAccessToken().getJwtToken() || "";
   }
-
   setLoading = (loading: boolean) => {
     this.loading = loading;
   };
-
   setCognitoUser = (cognitoUser: CognitoUser | null) => {
     this.cognitoUser = cognitoUser;
   };
-
   setEmail = (email: string | null) => {
     this.email = email;
   };
-
   signIn = async (email: string, password: string) => {
     let result: SignInResponses = SignInResponses.Error;
     this.setLoading(true);
     try {
       const cognitoUser = await Auth.signIn(email, password);
       this.setCognitoUser(cognitoUser);
-
       result = SignInResponses.Ok;
     } catch (e: any) {
       if (e.code === "UserNotConfirmedException") {
         await this.resendConfirmationCode(email);
-
         this.setEmail(email);
         result = SignInResponses.NotConfirmed;
       }
@@ -74,7 +66,6 @@ class UserStore implements IUserStore {
     }
     return result;
   };
-
   signUp = async (email: string, password: string) => {
     this.setLoading(true);
     let result = false;
@@ -83,7 +74,6 @@ class UserStore implements IUserStore {
         username: email,
         password,
       });
-
       this.setEmail(email);
       result = true;
     } catch (e) {
@@ -93,7 +83,6 @@ class UserStore implements IUserStore {
     }
     return result;
   };
-
   confirmSignUp = async (code: string) => {
     if (this.email === null) return false;
     this.setLoading(true);
@@ -102,8 +91,6 @@ class UserStore implements IUserStore {
       await Auth.confirmSignUp(this.email, code, {
         forceAliasCreation: true,
       });
-
-      this.setEmail(null);
       result = true;
     } catch (e) {
       //
@@ -112,15 +99,12 @@ class UserStore implements IUserStore {
     }
     return result;
   };
-
   resendConfirmationCode = async (email = this.email) => {
     if (email === null) return false;
     this.setLoading(true);
     let result = false;
-
     try {
       await Auth.resendSignUp(email);
-
       result = true;
     } catch (e) {
       //
