@@ -47,6 +47,14 @@ export default StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
+  startButton: {
+    height: "100%",
+  },
+  startButtonText: {
+    color: Colors.darkGray,
+    fontSize: 20,
+    fontWeight: "300",
+  },
   submitButton: {
     paddingTop: Metrics.bigSpace,
   },
@@ -55,13 +63,6 @@ export default StyleSheet.create({
     fontSize: Fonts.size.h2,
     fontWeight: "400",
     textAlign: "center",
-  },
-  titleBottom: {
-    alignSelf: "center",
-    color: Colors.darkGray,
-    fontSize: 20,
-    fontWeight: "300",
-    padding: 50,
   },
   titleTop: {
     alignSelf: "center",
@@ -74,10 +75,10 @@ export default StyleSheet.create({
     justifyContent: "space-evenly",
     paddingHorizontal: Metrics.baseSpace,
   },
-  url: { color: Colors.secondary },
+  url: {
+    color: Colors.secondary,
+  },
   urlText: {
-    urlText: {
-      color: Colors.secondary,
-    },
+    color: Colors.secondary,
   },
 });
