@@ -7,14 +7,20 @@ import { RootStackParamList } from "../models/navigation";
 import { Home } from "../screens/home/Home";
 import { LogIn } from "../screens/login/Login";
 import { CodeVerification } from "../screens/codeVerification/CodeVerification";
+import { useStores } from "../hooks/useStores";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigation = observer(() => {
+  const { user } = useStores();
+
   const main = () => {
-    return (
+    return user.isLoggedIn ? (
       <>
         <Stack.Screen name={Routes.Home} component={Home} />
+      </>
+    ) : (
+      <>
         <Stack.Screen name={Routes.LogIn} component={LogIn} />
         <Stack.Screen
           name={Routes.CodeVerification}

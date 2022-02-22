@@ -1,6 +1,7 @@
 import { observable, action, makeObservable, computed } from "mobx";
 import { Auth } from "aws-amplify";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { create } from "../../services/Api";
 
 export enum SignInResponses {
   Error = "error",
@@ -9,28 +10,38 @@ export enum SignInResponses {
 }
 
 export interface IUserStore {
+  hydrated: boolean;
   loading: boolean;
   email: string | null;
+  isLoggedIn: boolean;
   signIn: (email: string, password: string) => Promise<SignInResponses>;
   signUp: (email: string, password: string) => Promise<boolean>;
   confirmSignUp: (password: string) => Promise<boolean>;
   resendConfirmationCode: (email?: string) => Promise<boolean>;
+  requestPasswordReset: (email: string) => Promise<boolean>;
 }
 
+const api = create();
+
 class UserStore implements IUserStore {
+  hydrated = false;
   loading = false;
   email: string | null = null;
   cognitoUser: CognitoUser | null = null;
   constructor() {
     makeObservable(this, {
+      hydrated: observable,
       loading: observable,
       email: observable,
       cognitoUser: observable,
+      jwtToken: computed,
+      isLoggedIn: computed,
       setLoading: action,
       setEmail: action,
       setCognitoUser: action,
-      jwtToken: computed,
     });
+
+    this.hydrateComplete();
   }
   get jwtToken(): string {
     if (!this.cognitoUser) {
@@ -39,6 +50,11 @@ class UserStore implements IUserStore {
     const session = this.cognitoUser.getSignInUserSession();
     return session?.getAccessToken().getJwtToken() || "";
   }
+
+  get isLoggedIn(): boolean {
+    return false;
+  }
+
   setLoading = (loading: boolean) => {
     this.loading = loading;
   };
@@ -54,6 +70,8 @@ class UserStore implements IUserStore {
     try {
       const cognitoUser = await Auth.signIn(email, password);
       this.setCognitoUser(cognitoUser);
+      api.setAuthToken(this.jwtToken);
+
       result = SignInResponses.Ok;
     } catch (e: any) {
       if (e.code === "UserNotConfirmedException") {
@@ -113,6 +131,35 @@ class UserStore implements IUserStore {
     }
     return result;
   };
+
+  requestPasswordReset = async (email = this.email) => {
+    if (email === null) return false;
+    this.setLoading(true);
+    let result = false;
+
+    try {
+      await Auth.forgotPassword(email);
+
+      result = true;
+    } catch (e) {
+      //
+    } finally {
+      this.setLoading(false);
+    }
+    return result;
+  };
+
+  async hydrateComplete() {
+    try {
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+      this.setCognitoUser(cognitoUser);
+      api.setAuthToken(this.jwtToken);
+    } catch (e) {
+      //
+    } finally {
+      this.hydrated = true;
+    }
+  }
 }
 
 const userStore = new UserStore();
