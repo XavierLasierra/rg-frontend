@@ -9,6 +9,7 @@ import { CgInput } from "../../components/cgInput/CgInput";
 import { i18n } from "../../i18n";
 import styles from "./GameForm.style";
 import { action, observable } from "mobx";
+import { CgNavBar } from "../../components/cgNavBar/CgNavBar";
 
 const GameForm = observer(() => {
   const [local] = useState(() =>
@@ -22,9 +23,7 @@ const GameForm = observer(() => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainContainer}>
-        <View style={styles.topContainer}>
-          <CgText style={styles.title}>{i18n.t("gameForm.title")}</CgText>
-        </View>
+        <CgNavBar transparent back title={i18n.t("gameForm.title")}></CgNavBar>
         <View style={styles.formContainer}>
           <CgInput
             required

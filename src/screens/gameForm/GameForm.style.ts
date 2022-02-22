@@ -9,7 +9,8 @@ export default StyleSheet.create({
     padding: Metrics.baseSpace,
   },
   formContainer: {
-    padding: Metrics.bigSpace,
+    paddingHorizontal: Metrics.bigSpace,
+    paddingTop: Metrics.navBarHeight,
   },
   mainContainer: {
     backgroundColor: Colors.secondary,
@@ -20,16 +21,5 @@ export default StyleSheet.create({
   safeArea: {
     backgroundColor: Colors.white,
     flex: 1,
-  },
-  title: {
-    fontSize: Fonts.size.h1,
-    fontWeight: "bold",
-    textAlign: "center",
-    width: 150,
-  },
-  topContainer: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: Metrics.bigSpace,
   },
 });
