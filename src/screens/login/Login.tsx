@@ -173,7 +173,10 @@ const LogIn = observer(() => {
               : Metrics.screenHeight * 0.2
           }>
           {local.isOpen ? (
-            [renderForm(), renderFooter()]
+            <>
+              {renderForm()}
+              {renderFooter()}
+            </>
           ) : (
             <CgButton
               text={i18n.t("login.loginButton")}
