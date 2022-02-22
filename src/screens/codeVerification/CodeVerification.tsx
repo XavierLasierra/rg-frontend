@@ -65,7 +65,7 @@ const CodeVerification = observer(() => {
   });
 
   const navigateLogin = () => {
-    navigation.navigate(Routes.LogIn);
+    navigation.navigate(Routes.Auth);
   };
 
   const submitCodeVerification = async () => {
