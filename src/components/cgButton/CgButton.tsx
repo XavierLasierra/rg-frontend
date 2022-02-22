@@ -21,7 +21,12 @@ import { CgSpinner } from "../cgSpinner/CgSpinner";
 import { Animations, Colors, Metrics } from "../../theme";
 import styles from "./CgButton.style";
 
-export type SkButtonTypes = "primary" | "transparent" | "secondary" | "cancel";
+export type SkButtonTypes =
+  | "primary"
+  | "transparent"
+  | "secondary"
+  | "black"
+  | "cancel";
 
 export interface SkButtonProps extends TouchableOpacityProps {
   size?: "small" | "medium" | "large";
@@ -109,6 +114,9 @@ const CgButton = ({
     let buttonStyle: ViewStyle[] = [styles.default];
 
     switch (type) {
+      case "black":
+        buttonStyle = [...buttonStyle, styles.blackText];
+        break;
       case "secondary":
         buttonStyle = [...buttonStyle, styles.secondary];
         break;

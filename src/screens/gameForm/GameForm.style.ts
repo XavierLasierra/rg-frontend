@@ -5,8 +5,11 @@ export default StyleSheet.create({
   ...AppStyles.screen,
   bottomContainer: {
     flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "flex-end",
     padding: Metrics.baseSpace,
+  },
+  formContainer: {
+    padding: Metrics.bigSpace,
   },
   mainContainer: {
     backgroundColor: Colors.secondary,
@@ -18,12 +21,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.white,
     flex: 1,
   },
-  text: {
-    fontSize: Fonts.size.h1,
-    padding: Metrics.bigSpace,
-    textAlign: "center",
-    width: 270,
-  },
   title: {
     fontSize: Fonts.size.h1,
     fontWeight: "bold",
@@ -32,7 +29,6 @@ export default StyleSheet.create({
   },
   topContainer: {
     alignItems: "center",
-    flex: 1,
     justifyContent: "space-between",
     padding: Metrics.bigSpace,
   },

@@ -26,5 +26,17 @@
     "password": "Password",
     "welcome": "Welcome to the world of Ranking Games! Start to register your plays and see who is the best player!",
     "termsAndConditions": "By signing up, you agree to our _#Terms and Conditions#_"
+  },
+  "home": {
+    "title": "RANKING GAMES",
+    "button": "CREATE MATCH"
+  },
+  "gameForm": {
+    "title": "NEW MATCH",
+    "form": {
+      "game": "Select Game",
+      "players": "Number of players",
+      "description": "Description of the game"
+    }
   }
 }

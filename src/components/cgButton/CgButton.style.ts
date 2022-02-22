@@ -2,6 +2,11 @@ import { StyleSheet } from "react-native";
 import { Colors, Metrics, Fonts } from "../../theme";
 
 export default StyleSheet.create({
+  blackText: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.secondary,
+    borderWidth: Metrics.buttonBorderWidth,
+  },
   cancel: {
     backgroundColor: Colors.transparent,
     borderColor: Colors.cancel,
