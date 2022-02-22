@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   ColorValue,
   LayoutChangeEvent,
+  StyleProp,
   Text,
   TextStyle,
   TouchableOpacity,
@@ -26,9 +27,10 @@ export interface SkButtonProps extends TouchableOpacityProps {
   size?: "small" | "medium" | "large";
   text: string;
   type?: SkButtonTypes;
-  textStyle?: TextStyle;
+  textStyle?: StyleProp<TextStyle>;
   loading?: boolean;
   animationDuration?: number;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const buttonSizes = {
@@ -41,6 +43,7 @@ const CgButton = ({
   type = "primary",
   text,
   style,
+  containerStyle,
   children,
   size = "large",
   textStyle,
@@ -158,7 +161,7 @@ const CgButton = ({
       onLayout={onLayout}
       accessibilityRole="button"
       disabled={disabled}
-      style={styles.container}
+      style={[styles.container, containerStyle]}
       {...rest}>
       <Animated.View style={[getButtonStyle(), animatedContainerStyle]}>
         {loading ? (

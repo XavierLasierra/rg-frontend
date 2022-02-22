@@ -13,7 +13,7 @@ import { useStores } from "../../hooks/useStores";
 import { SignInResponses } from "../../stores/user/UserStore";
 
 import { CgButton } from "../../components/cgButton/CgButton";
-import { SkInput } from "../../components/skInput/SkInput";
+import { CgInput } from "../../components/cgInput/CgInput";
 import { CgExpandableView } from "../../components/cgExpandableView/CgExpandableView";
 import { CgFadeView } from "../../components/cgFadeView/CgFadeView";
 import { CgText } from "../../components/cgText/CgText";
@@ -78,25 +78,31 @@ const LogIn = observer(() => {
   const renderForm = () => {
     return (
       <>
-        <SkInput
+        <CgInput
           icon="mail"
           onChangeText={setEmail}
           value={local.email}
-          placeholder={i18n.t("login.form.emailPlaceholder")}
+          placeholder={i18n.t("login.email")}
         />
-        <SkInput
+        <CgInput
           icon="lock"
           onChangeText={setPassword}
           value={local.password}
-          placeholder={i18n.t("login.form.passwordPlaceholder")}
+          placeholder={i18n.t("login.password")}
         />
-        <View style={styles.submitButton}>
-          {local.isSignIn ? (
-            <CgButton text={i18n.t("login.submit")} onPress={submitSignIn} />
-          ) : (
-            <CgButton text={i18n.t("login.submit")} onPress={submitSignUp} />
-          )}
-        </View>
+        {local.isSignIn ? (
+          <CgButton
+            containerStyle={styles.submitButton}
+            text={i18n.t("login.buttons.signIn")}
+            onPress={submitSignIn}
+          />
+        ) : (
+          <CgButton
+            containerStyle={styles.submitButton}
+            text={i18n.t("login.buttons.signUp")}
+            onPress={submitSignUp}
+          />
+        )}
       </>
     );
   };
@@ -106,39 +112,48 @@ const LogIn = observer(() => {
   };
 
   const renderFooter = () => {
-    return local.isSignIn ? (
+    return (
       <View style={styles.bottomContainer}>
-        <CgButton type="transparent" text={i18n.t("login.forgotPassword")} />
-        <CgText>{i18n.t("login.signUpText")}</CgText>
-        <CgButton
-          style={styles.SignUpButton}
-          type="transparent"
-          text={i18n.t("login.signUpButton")}
-          onPress={() => setIsSignIn(false)}
-        />
+        {local.isSignIn ? (
+          <>
+            <CgButton
+              textStyle={styles.forgotButtonText}
+              style={styles.forgotButton}
+              type="transparent"
+              text={i18n.t("login.buttons.forgotPassword")}
+            />
+            <View>
+              <CgText style={styles.smallText}>
+                {i18n.t("login.signUpHint")}
+              </CgText>
+              <CgButton
+                type="transparent"
+                text={i18n.t("login.buttons.signUp")}
+                onPress={() => setIsSignIn(false)}
+              />
+            </View>
+          </>
+        ) : (
+          <>
+            <CgText
+              style={styles.smallText}
+              parse={[
+                {
+                  pattern: /(_#)(.+)(#_)/g,
+                  style: styles.urlText,
+                  renderText: renderUrl,
+                },
+              ]}>
+              {i18n.t("login.termsAndConditions")}
+            </CgText>
+            <CgButton
+              type="transparent"
+              text={i18n.t("login.buttons.back")}
+              onPress={() => setIsSignIn(true)}
+            />
+          </>
+        )}
       </View>
-    ) : (
-      <>
-        <View style={styles.bottomContainer}>
-          <CgText
-            parse={[
-              {
-                pattern: /(_#)(.+)(#_)/g,
-                style: styles.url,
-                renderText: renderUrl,
-                //onPress: () => console.log("This are the terms and conditions"),
-              },
-            ]}>
-            {i18n.t("login.termsAndConditions")}
-          </CgText>
-          <CgButton
-            style={styles.SignUpButton}
-            type="transparent"
-            text={i18n.t("login.back")}
-            onPress={() => setIsSignIn(true)}
-          />
-        </View>
-      </>
     );
   };
 
@@ -146,22 +161,20 @@ const LogIn = observer(() => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <Text style={styles.titleTop}>{i18n.t("login.hello")}</Text>
-          <View style={styles.imageContainer}>
-            <CgExpandableView
-              width={
-                local.isOpen ? Metrics.screenWidth : Metrics.screenWidth * 0.8
-              }
-              height={
-                local.isOpen ? Metrics.screenHeight : Metrics.screenHeight * 0.4
-              }
-              style={styles.blueFigure}
-            />
-            <FastImage style={styles.image} source={Images.boardGames} />
-          </View>
-          <CgExpandableView height={local.isOpen ? 0 : "auto"}>
+          <Text style={styles.titleTop}>{i18n.t("login.title")}</Text>
+          <CgExpandableView
+            width={
+              local.isOpen ? Metrics.screenWidth : Metrics.screenWidth * 0.8
+            }
+            height={
+              local.isOpen ? Metrics.screenHeight : Metrics.screenHeight * 0.4
+            }
+            style={styles.blueFigure}
+          />
+          <FastImage style={styles.image} source={Images.boardGames} />
+          <CgExpandableView height={local.isOpen ? 0 : 100}>
             <CgFadeView opacity={local.isOpen ? 0 : 1}>
-              <Text style={styles.text}>{i18n.t("login.welcomeText")}</Text>
+              <CgText style={styles.text}>{i18n.t("login.welcome")}</CgText>
             </CgFadeView>
           </CgExpandableView>
         </View>
@@ -179,7 +192,7 @@ const LogIn = observer(() => {
             </>
           ) : (
             <CgButton
-              text={i18n.t("login.loginButton")}
+              text={i18n.t("login.buttons.start")}
               type="transparent"
               onPress={() => setIsOpen(true)}
               textStyle={styles.startButtonText}

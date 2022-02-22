@@ -26,22 +26,14 @@ const CgExpandableView = ({
   const activeHeight = useSharedValue<number | null>(null);
   const activeWidth = useSharedValue<number | null>(null);
 
-  const getActiveHeight = (): number => {
-    return typeof height === "number" ? height : autoSize.height || 0;
-  };
-
-  const getActiveWidth = (): number => {
-    return typeof width === "number" ? width : autoSize.width || 0;
-  };
-
   useEffect(() => {
     if (autoSize.height === undefined) return;
-    activeHeight.value = getActiveHeight();
+    activeHeight.value = typeof height === "number" ? height : autoSize.height;
   }, [autoSize.height, height]);
 
   useEffect(() => {
     if (autoSize.width === undefined) return;
-    activeWidth.value = getActiveWidth();
+    activeWidth.value = typeof width === "number" ? width : autoSize.width;
   }, [autoSize.width, width]);
 
   const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
