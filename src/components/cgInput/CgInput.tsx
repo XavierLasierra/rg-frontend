@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { SkIcon } from "../skIcon/SkIcon";
 
-import styles from "./SkInput.style";
+import styles from "./CgInput.style";
 
-export interface SkInputProps extends TextInputProps {
+export interface CgInputProps extends TextInputProps {
   isInvalid?: boolean;
   hint?: string;
   containerStyle?: ViewStyle;
@@ -23,7 +23,7 @@ export interface SkInputProps extends TextInputProps {
   iconStyle?: StyleProp<TextStyle>;
 }
 
-const SkInput = (props: SkInputProps) => {
+const CgInput = (props: CgInputProps) => {
   const {
     value,
     isInvalid,
@@ -50,14 +50,17 @@ const SkInput = (props: SkInputProps) => {
   return (
     <>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-      <View style={[styles.input, containerStyle]}>
+      <View
+        style={[
+          styles.input,
+          isInvalid && styles.inputInvalid,
+          isFocused && styles.inputFocus,
+          ,
+          containerStyle,
+        ]}>
         {icon && <SkIcon style={[styles.icon, iconStyle]} name={icon}></SkIcon>}
         <TextInput
-          style={[
-            multiline && styles.inputArea,
-            isInvalid && styles.inputInvalid,
-            isFocused && styles.inputFocus,
-          ]}
+          style={[styles.textField, multiline && styles.inputArea]}
           onFocus={onFocus}
           onBlur={onBlur}
           multiline={multiline}
@@ -70,4 +73,4 @@ const SkInput = (props: SkInputProps) => {
   );
 };
 
-export { SkInput };
+export { CgInput };

@@ -5,7 +5,7 @@ import { Routes } from "./routes";
 import { RootStackParamList } from "../models/navigation";
 
 import { Home } from "../screens/home/Home";
-import { LogIn } from "../screens/login/Login";
+import { Auth } from "../screens/auth/Auth";
 import { CodeVerification } from "../screens/codeVerification/CodeVerification";
 import { useStores } from "../hooks/useStores";
 
@@ -21,7 +21,7 @@ const MainNavigation = observer(() => {
       </>
     ) : (
       <>
-        <Stack.Screen name={Routes.LogIn} component={LogIn} />
+        <Stack.Screen name={Routes.Auth} component={Auth} />
         <Stack.Screen
           name={Routes.CodeVerification}
           component={CodeVerification}

@@ -3,9 +3,6 @@ import { AppStyles, Colors, Fonts, Metrics } from "../../theme";
 
 export default StyleSheet.create({
   ...AppStyles.screen,
-  SignUpButton: {
-    top: Metrics.bigSpace,
-  },
   blueFigure: {
     alignSelf: "center",
     backgroundColor: Colors.secondaryDark,
@@ -16,8 +13,8 @@ export default StyleSheet.create({
     position: "absolute",
   },
   bottomContainer: {
-    alignItems: "center",
-    top: Metrics.bigSpace,
+    flex: 1,
+    justifyContent: "space-between",
   },
   container: {
     backgroundColor: Colors.secondary,
@@ -32,6 +29,14 @@ export default StyleSheet.create({
     borderTopRightRadius: 50,
     padding: Metrics.bigSpace,
   },
+  forgotButton: {
+    height: "auto",
+  },
+  forgotButtonText: {
+    color: Colors.primary,
+    fontSize: Fonts.size.medium,
+    fontWeight: "500",
+  },
   icon: {
     color: Colors.secondary,
     fontSize: Metrics.icons.medium,
@@ -40,12 +45,14 @@ export default StyleSheet.create({
   image: {
     aspectRatio: 1.5,
   },
-  imageContainer: {
-    paddingVertical: Metrics.mediumSpace,
-  },
   inputContainer: {
-    alignItems: "center",
     flexDirection: "row",
+  },
+  smallText: {
+    fontSize: Fonts.size.medium,
+    lineHeight: Fonts.size.medium * 1.5,
+    paddingHorizontal: Metrics.bigSpace,
+    textAlign: "center",
   },
   startButton: {
     height: "100%",
@@ -56,7 +63,7 @@ export default StyleSheet.create({
     fontWeight: "300",
   },
   submitButton: {
-    paddingTop: Metrics.bigSpace,
+    paddingVertical: Metrics.mediumSpace,
   },
   text: {
     color: Colors.gray,
@@ -69,14 +76,12 @@ export default StyleSheet.create({
     color: Colors.white,
     fontSize: 30,
     fontWeight: "300",
+    zIndex: 1,
   },
   topContainer: {
     flex: 1,
     justifyContent: "space-evenly",
     paddingHorizontal: Metrics.baseSpace,
-  },
-  url: {
-    color: Colors.secondary,
   },
   urlText: {
     color: Colors.secondary,

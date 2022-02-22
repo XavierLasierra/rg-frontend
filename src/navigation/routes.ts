@@ -1,5 +1,5 @@
 export enum Routes {
   Home = "Home",
-  LogIn = "LogIn",
+  Auth = "Auth",
   CodeVerification = "CodeVerification",
 }
