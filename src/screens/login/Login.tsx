@@ -182,7 +182,8 @@ const LogIn = observer(() => {
               text={i18n.t("login.loginButton")}
               type="transparent"
               onPress={() => setIsOpen(true)}
-              textStyle={styles.titleBottom}
+              textStyle={styles.startButtonText}
+              style={styles.startButton}
             />
           )}
         </CgExpandableView>
