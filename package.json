@@ -43,6 +43,7 @@
     "@types/react-native": "^0.66.16",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^17.0.1",
+    "axios-mock-adapter": "^1.20.0",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.3",
     "eslint": "^7.14.0",
@@ -69,6 +70,14 @@
   },
   "jest": {
     "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/__mocks__/globalMock.js",
+      "<rootDir>/__mocks__/asyncStorageMock.js",
+      "<rootDir>/__mocks__/reactNativeNetInfo.js"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
