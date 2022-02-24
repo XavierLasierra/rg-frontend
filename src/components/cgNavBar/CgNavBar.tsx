@@ -1,11 +1,12 @@
 import React from "react";
-
 import { View, TouchableOpacity } from "react-native";
 import { observer } from "mobx-react";
 
-import styles from "./CgNavBar.style";
-import { useNavigation } from "@react-navigation/native";
+import { SkIcon } from "../skIcon/SkIcon";
 import { CgText } from "../cgText/CgText";
+
+import { useNavigation } from "@react-navigation/native";
+import styles from "./CgNavBar.style";
 
 export interface CgNavBarProps {
   title?: string;
@@ -36,7 +37,7 @@ const CgNavBar = observer((props: CgNavBarProps) => {
   const renderBack = () => {
     return transparent ? (
       <TouchableOpacity>
-        <CgText>back</CgText>
+        <SkIcon name="left-open" style={styles.barButton} />
       </TouchableOpacity>
     ) : (
       // <SkRoundIcon

@@ -6,6 +6,7 @@ import { RootStackParamList } from "../models/navigation";
 
 import { Home } from "../screens/home/Home";
 import { Auth } from "../screens/auth/Auth";
+import { GameForm } from "../screens/gameForm/GameForm";
 import { CodeVerification } from "../screens/codeVerification/CodeVerification";
 import { useStores } from "../hooks/useStores";
 
@@ -18,6 +19,7 @@ const MainNavigation = observer(() => {
     return user.isLoggedIn ? (
       <>
         <Stack.Screen name={Routes.Home} component={Home} />
+        <Stack.Screen name={Routes.GameForm} component={GameForm} />
       </>
     ) : (
       <>

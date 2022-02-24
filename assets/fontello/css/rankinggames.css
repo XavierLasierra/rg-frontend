@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'rankinggames';
-  src: url('../font/rankinggames.eot?76863565');
-  src: url('../font/rankinggames.eot?76863565#iefix') format('embedded-opentype'),
-       url('../font/rankinggames.woff2?76863565') format('woff2'),
-       url('../font/rankinggames.woff?76863565') format('woff'),
-       url('../font/rankinggames.ttf?76863565') format('truetype'),
-       url('../font/rankinggames.svg?76863565#rankinggames') format('svg');
+  src: url('../font/rankinggames.eot?7982418');
+  src: url('../font/rankinggames.eot?7982418#iefix') format('embedded-opentype'),
+       url('../font/rankinggames.woff2?7982418') format('woff2'),
+       url('../font/rankinggames.woff?7982418') format('woff'),
+       url('../font/rankinggames.ttf?7982418') format('truetype'),
+       url('../font/rankinggames.svg?7982418#rankinggames') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'rankinggames';
-    src: url('../font/rankinggames.svg?76863565#rankinggames') format('svg');
+    src: url('../font/rankinggames.svg?7982418#rankinggames') format('svg');
   }
 }
 */
@@ -56,3 +56,4 @@
 
 .icon-mail:before { content: '\e800'; } /* '' */
 .icon-lock:before { content: '\e801'; } /* '' */
+.icon-left-open:before { content: '\e802'; } /* '' */

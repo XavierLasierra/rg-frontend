@@ -15,7 +15,9 @@ export default StyleSheet.create({
   },
   barButton: {
     alignSelf: "center",
+    fontSize: 40,
     justifyContent: "center",
+    paddingLeft: Metrics.bigSpace,
     width: Metrics.buttonSize,
   },
   centered: {
